@@ -86,8 +86,13 @@ public class Producto {
 		return this.precio;
 	}
 	
+	/**
+	 * Gets the place where a product is in the warehouse.
+	 * 
+	 * @return where a product is in the warehouse as a location.
+	 */
 	public LocalizacionProducto getLocalizacion() {
-		return null;
+		return this.localizacion;
 	}
 
 }
