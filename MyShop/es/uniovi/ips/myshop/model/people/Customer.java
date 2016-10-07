@@ -1,17 +1,17 @@
-package es.uniovi.ips.myshop.logic.people;
+package es.uniovi.ips.myshop.model.people;
 
-public class Cliente extends Person{
+public class Customer extends Person{
 	
 	private String dni;
 	private Address address;
 
-	public Cliente(String id, String name, String surname, String dni, Address address) {
+	public Customer(String id, String name, String surname, String dni, Address address) {
 		super(id, name, surname);
 		setDni(dni);
 		setAddress(address);
 	}
 	
-	public Cliente(String id, String name, String surname, String dni, String street, String city, String state, String zipCode) {
+	public Customer(String id, String name, String surname, String dni, String street, String city, String state, String zipCode) {
 		super(id, name, surname);
 		setDni(dni);
 		setAddress(new Address(street, city, state, zipCode));

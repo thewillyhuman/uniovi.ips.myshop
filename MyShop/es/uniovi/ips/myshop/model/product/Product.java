@@ -1,6 +1,6 @@
-package es.uniovi.ips.myshop.logic.producto;
+package es.uniovi.ips.myshop.model.product;
 
-import es.uniovi.ips.myshop.logic.almacen.LocalizacionProducto;
+import es.uniovi.ips.myshop.model.warehouse.ProductLocation;
 
 /**
  * 
@@ -11,11 +11,11 @@ import es.uniovi.ips.myshop.logic.almacen.LocalizacionProducto;
  * @since 6 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class Producto {
+public class Product {
 
 	private String IDProd, descripcion;
 	private double precio;
-	private LocalizacionProducto localizacion;
+	private ProductLocation localizacion;
 
 	/**
 	 * Main constructor ready to get all the product basic data to represent
@@ -25,11 +25,11 @@ public class Producto {
 	 * @param descripcion of the product.
 	 * @param precio of the product.
 	 */
-	public Producto(String IDProd, String descripcion, double precio) {
+	public Product(String IDProd, String descripcion, double precio) {
 		setIDProducto(IDProd);
 		setDescription(descripcion);
 		setPrecio(precio);
-		localizacion = new LocalizacionProducto();
+		localizacion = new ProductLocation();
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class Producto {
 	 * 
 	 * @return where a product is in the warehouse as a location.
 	 */
-	public LocalizacionProducto getLocalizacion() {
+	public ProductLocation getLocalizacion() {
 		return this.localizacion;
 	}
 

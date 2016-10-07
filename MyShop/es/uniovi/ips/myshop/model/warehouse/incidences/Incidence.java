@@ -1,11 +1,11 @@
-package es.uniovi.ips.myshop.logic.almacen.incidencias;
+package es.uniovi.ips.myshop.model.warehouse.incidences;
 
-public class Incidencia {
+public class Incidence {
 
 	private String id, descripcion;
 	public boolean solved = false;
 
-	public Incidencia(String id, String descripcion) {
+	public Incidence(String id, String descripcion) {
 		this.setId(id);
 		this.setDescripcion(descripcion);
 	}

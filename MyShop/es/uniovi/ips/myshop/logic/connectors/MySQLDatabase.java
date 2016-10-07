@@ -1,4 +1,4 @@
-package es.uniovi.ips.myshop.logic.database;
+package es.uniovi.ips.myshop.logic.connectors;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

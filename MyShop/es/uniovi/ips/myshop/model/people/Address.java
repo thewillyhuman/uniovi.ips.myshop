@@ -1,4 +1,4 @@
-package es.uniovi.ips.myshop.logic.people;
+package es.uniovi.ips.myshop.model.people;
 
 public class Address {
 	

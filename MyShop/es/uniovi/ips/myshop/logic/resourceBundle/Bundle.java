@@ -1,4 +1,4 @@
-package es.uniovi.ips.myshop.logic.bundle;
+package es.uniovi.ips.myshop.logic.resourceBundle;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

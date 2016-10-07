@@ -1,6 +1,6 @@
-package es.uniovi.ips.myshop.logic.almacen;
+package es.uniovi.ips.myshop.model.warehouse;
 
-public class Almacen {
+public class Warehouse {
 
 	public final static int PASILLOS = 4;
 	public final static int POSICIONES = 10;

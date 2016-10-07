@@ -1,29 +1,29 @@
-package es.uniovi.ips.myshop.logic.almacen;
+package es.uniovi.ips.myshop.model.warehouse;
 
 import java.util.List;
 
-import es.uniovi.ips.myshop.logic.order.DetallePedido;
-import es.uniovi.ips.myshop.logic.order.Pedido;
-import es.uniovi.ips.myshop.logic.order.Pedido.Estado;
-import es.uniovi.ips.myshop.logic.people.Almacenero;
-import es.uniovi.ips.myshop.logic.producto.Producto;
+import es.uniovi.ips.myshop.model.order.OrderDetail;
+import es.uniovi.ips.myshop.model.order.Order;
+import es.uniovi.ips.myshop.model.order.Order.Estado;
+import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
+import es.uniovi.ips.myshop.model.product.Product;
 
-public class OT {
+public class WorkingPlan {
 	
-	Almacenero almacenero;
-	Pedido pedido;
+	WharehouseKeeper almacenero;
+	Order pedido;
 	
-	public OT(Pedido pedido, Almacenero almacenero) {
+	public WorkingPlan(Order pedido, WharehouseKeeper almacenero) {
 		this.almacenero = almacenero;
 		this.pedido = pedido;
 	}
 	
-	public List<Producto> getOTShorted() {
+	public List<Product> getOTShorted() {
 		return null;
 	}
 	
 	public boolean recogerProducto(String id) {
-		for(DetallePedido dp : pedido.getProductos()) {
+		for(OrderDetail dp : pedido.getProductos()) {
 			if(dp.getProducto().getIDProducto()==id) {
 				dp.recogido = true;
 				return true;
@@ -33,7 +33,7 @@ public class OT {
 	}
 	
 	public boolean marcarParaEmpaquetado() {
-		for(DetallePedido dp : pedido.getProductos()) {
+		for(OrderDetail dp : pedido.getProductos()) {
 			if(dp.recogido==false)
 				return false;
 			if(dp.incidencia.solved==false) {

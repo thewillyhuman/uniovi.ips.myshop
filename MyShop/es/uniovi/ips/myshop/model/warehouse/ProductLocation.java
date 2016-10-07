@@ -1,8 +1,8 @@
-package es.uniovi.ips.myshop.logic.almacen;
+package es.uniovi.ips.myshop.model.warehouse;
 
-import es.uniovi.ips.myshop.logic.producto.Producto;
+import es.uniovi.ips.myshop.model.product.Product;
 
-public class LocalizacionProducto {
+public class ProductLocation {
 
 	public final static int N_PASILLOS = 2;
 	public final static int N_POSICIONES = 10;
@@ -12,7 +12,7 @@ public class LocalizacionProducto {
 		DERECHA, IZQUIERDA
 	}
 	
-	private Producto prod;
+	private Product prod;
 	private int pasillo, posicion, altura;
 	private Lado lado;
 	
