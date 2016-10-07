@@ -40,7 +40,18 @@ public class Pedido {
 		productos.add(producto);
 	}
 	
+	public void removeProducto(Producto producto) {
+		productos.remove(producto);
+	}
+	
 	public List<Producto> getProductos() {
 		return this.productos;
+	}
+	
+	public double getPrecioTotal() {
+		double res = 0.0;
+		for(Producto p : productos)
+			res+=p.getPrecio();
+		return res;
 	}
 }

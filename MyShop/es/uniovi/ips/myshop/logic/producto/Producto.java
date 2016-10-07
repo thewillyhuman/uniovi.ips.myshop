@@ -1,5 +1,7 @@
 package es.uniovi.ips.myshop.logic.producto;
 
+import es.uniovi.ips.myshop.logic.almacen.LocalizacionProducto;
+
 /**
  * 
  * Producto.java
@@ -13,6 +15,7 @@ public class Producto {
 
 	private String IDProd, descripcion;
 	private double precio;
+	private LocalizacionProducto localizacion;
 
 	/**
 	 * Main constructor ready to get all the product basic data to represent
@@ -26,6 +29,7 @@ public class Producto {
 		setIDProducto(IDProd);
 		setDescription(descripcion);
 		setPrecio(precio);
+		localizacion = new LocalizacionProducto();
 	}
 
 	/**
@@ -80,6 +84,10 @@ public class Producto {
 	 */
 	public double getPrecio() {
 		return this.precio;
+	}
+	
+	public LocalizacionProducto getLocalizacion() {
+		return null;
 	}
 
 }

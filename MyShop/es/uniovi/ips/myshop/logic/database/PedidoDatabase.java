@@ -2,7 +2,7 @@ package es.uniovi.ips.myshop.logic.database;
 
 import java.util.List;
 
-import es.uniovi.ips.myshop.logic.almacen.OrdenTrabajo.Estado;
+import es.uniovi.ips.myshop.logic.almacen.OT.Estado;
 import es.uniovi.ips.myshop.logic.order.Pedido;
 
 public class PedidoDatabase {
