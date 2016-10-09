@@ -1,6 +1,8 @@
 <img src="myshop-logo-black.png" alt="myShop" height="70"><p>
 # My Shop Project from IPS Subject at University of Oviedo.
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/881dfec7ffa8472097df1d3b1b8a8313)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ZenMaster91/uniovi.ips.myshop&amp;utm_campaign=Badge_Grade)<p>
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/881dfec7ffa8472097df1d3b1b8a8313)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ZenMaster91/uniovi.ips.myshop&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.com/ZenMaster91/uniovi.ips.myshop.svg?token=TtyrRtm6h2Zz1Kj9USKu&branch=travis-integration)](https://travis-ci.com/ZenMaster91/uniovi.ips.myshop)
+
 **Welcome to myShop!**
 
 My Shop is a project developed for the Software Development Process Enginiering at University of Oviedo by **Guillermo Facuno**, **Carlos López**, **Paloma Sierra** and **Héctor Apellido**. This project is based for a theoretical company that sells computers an other electronic devices to a) other business and b) home users. My Shop must allow the company to sell their products throw the application and at the same time has to allow the warehouse keeper to track the orders and bills. Of course more functionalities will be added when required by the company.
