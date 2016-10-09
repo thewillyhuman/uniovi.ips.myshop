@@ -24,7 +24,7 @@ public abstract class Connector {
 	 * Assigns the database to hold.
 	 */
 	public Connector() {
-		db = Controller.db;
+		db = Controller.getDatabase();
 	}
 
 	/**

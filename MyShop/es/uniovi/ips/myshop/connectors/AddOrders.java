@@ -16,6 +16,8 @@ import es.uniovi.ips.myshop.model.order.Order;
  */
 public class AddOrders extends Connector {
 	
+	private Order order;
+	
 	/**
 	 * Will add the given order on to the database.
 	 * 
@@ -25,11 +27,11 @@ public class AddOrders extends Connector {
 	 */
 	public AddOrders(Order order) throws SQLException {
 		super.run();
+		this.order = order;
 	}
 
 	@Override
 	protected void query() {
-		// TODO Auto-generated method stub
-		
+		super.sql = order.toString();
 	}
 }

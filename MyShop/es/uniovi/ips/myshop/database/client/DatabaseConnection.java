@@ -3,7 +3,7 @@ package es.uniovi.ips.myshop.database.client;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import es.uniovi.ips.myshop.resourceBundle.Bundle;
+import es.uniovi.ips.myshop.resourcebundle.Bundle;
 
 /**
  * 

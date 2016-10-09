@@ -15,6 +15,8 @@ import es.uniovi.ips.myshop.model.people.Customer;
  * @formatter Oviedo Computing Community
  */
 public class AddCustomers extends Connector {
+	
+	private Customer customer;
 
 	/**
 	 * Adds a single customer constructor. For a given customer object will add
@@ -26,11 +28,12 @@ public class AddCustomers extends Connector {
 	 */
 	public AddCustomers(Customer customer) throws SQLException {
 		super.run();
+		this.customer = customer;
 	}
 
 	@Override
 	protected void query() {
-		// TODO Auto-generated method stub
+		super.sql = customer.toString();
 	}
 
 }

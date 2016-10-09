@@ -34,9 +34,9 @@ public class WorkingPlan {
 	
 	public boolean marcarParaEmpaquetado() {
 		for(OrderDetail dp : pedido.getProductos()) {
-			if(dp.recogido==false)
+			if(!dp.recogido)
 				return false;
-			if(dp.incidencia.solved==false) {
+			if(!dp.incidencia.solved) {
 				pedido.setEstado(Status.INCIDENCIA);
 				return false;
 			}

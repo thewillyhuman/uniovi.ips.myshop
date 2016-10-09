@@ -16,6 +16,8 @@ import es.uniovi.ips.myshop.model.product.Product;
  */
 public class AddProducts extends Connector {
 
+	private Product product;
+	
 	/**
 	 * Adds the given product to the database.
 	 * 
@@ -25,12 +27,12 @@ public class AddProducts extends Connector {
 	 */
 	public AddProducts(Product product) throws SQLException {
 		super.run();
+		this.product = product;
 	}
 
 	@Override
 	protected void query() {
-		// TODO Auto-generated method stub
-
+		super.sql = product.toString();
 	}
 
 }
