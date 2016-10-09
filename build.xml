@@ -53,6 +53,8 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
+    <classpath location="MyShop/es/uniovi/ips/myshop/lib/junit-4.11.jar" />
+	  <classpath location="MyShop/es/uniovi/ips/myshop/lib/hamcrest-core-1.3.jar" />
     <target name="test">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
