@@ -27,7 +27,7 @@ public class Customer extends Person{
 	/**
 	 * @param dni the dni to set
 	 */
-	public void setDni(String dni) {
+	private void setDni(String dni) {
 		this.dni = dni;
 	}
 
@@ -41,7 +41,7 @@ public class Customer extends Person{
 	/**
 	 * @param address the address to set
 	 */
-	public void setAddress(Address address) {
+	private void setAddress(Address address) {
 		this.address = address;
 	}
 	

@@ -8,24 +8,40 @@ import es.uniovi.ips.myshop.model.people.Address;
 import es.uniovi.ips.myshop.model.people.Customer;
 import es.uniovi.ips.myshop.model.product.Product;
 
+/**
+ * 
+ * Order.java represents an order in the system.
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 081020162213
+ * @since 8 de oct. de 2016
+ * @formatter Oviedo Computing Community
+ */
 public class Order {
 
 	private String idPedido;
 	private Customer cliente;
 	private List<OrderDetail> productos;
 	private Date fecha;
-	Estado estado;
+	Status estado;
 
-	public enum Estado {
+	public enum Status {
 		EN_PROCESO, ASIGNADO, INCIDENCIA, EMPAQUETANDO
 	}
 
+	/**
+	 * Creates an empty order where we will be able to add and delete products.
+	 * 
+	 * @param idPedido is the id of the order.
+	 * @param cliente 
+	 * @param fecha
+	 */
 	public Order(String idPedido, Customer cliente, Date fecha) {
 		setIdPedido(idPedido);
 		setCliente(cliente);
 		setDate(fecha);
 		productos = new ArrayList<OrderDetail>();
-		estado = Estado.EN_PROCESO;
+		estado = Status.EN_PROCESO;
 	}
 
 	private void setCliente(Customer cliente) {
@@ -73,7 +89,7 @@ public class Order {
 		return this.fecha;
 	}
 
-	public void setDate(Date fecha) {
+	private void setDate(Date fecha) {
 		this.fecha = fecha;
 	}
 
@@ -91,11 +107,11 @@ public class Order {
 		return res;
 	}
 
-	public void setEstado(Estado estado) {
+	public void setEstado(Status estado) {
 		this.estado = estado;
 	}
 
-	public Estado getEstado() {
+	public Status getEstado() {
 		return this.estado;
 	}
 

@@ -1,22 +1,23 @@
 package es.uniovi.ips.myshop.model.product;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
+
+import es.uniovi.ips.myshop.connectors.AddProducts;
+import es.uniovi.ips.myshop.connectors.GetProducts;
 
 public class Inventary {
 	
-	List<Product> inventario;
-	
-	public Inventary() {
-		inventario = new ArrayList<Product>();
-	}
-	
-	public void addProduct(Product producto) {
-		inventario.add(producto);
+	public void addProduct(Product product) throws SQLException {
+		new AddProducts(product);
 	}
 	
 	public List<Product> getAllProducts() {
-		return this.inventario;
+		return new GetProducts().getAllProducts();
+	}
+	
+	public Product getProduct(String productID) {
+		return new GetProducts().getProduct(productID);
 	}
 
 }

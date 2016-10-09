@@ -21,7 +21,7 @@ public class Address {
 	/**
 	 * @param street the street to set
 	 */
-	public void setStreet(String street) {
+	private void setStreet(String street) {
 		this.street = street;
 	}
 
@@ -35,7 +35,7 @@ public class Address {
 	/**
 	 * @param city the city to set
 	 */
-	public void setCity(String city) {
+	private void setCity(String city) {
 		this.city = city;
 	}
 
@@ -49,7 +49,7 @@ public class Address {
 	/**
 	 * @param state the state to set
 	 */
-	public void setState(String state) {
+	private void setState(String state) {
 		this.state = state;
 	}
 
@@ -63,7 +63,7 @@ public class Address {
 	/**
 	 * @param zipCode the zipCode to set
 	 */
-	public void setZipCode(String zipCode) {
+	private void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 	

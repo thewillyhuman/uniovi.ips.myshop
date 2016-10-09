@@ -2,8 +2,7 @@ package es.uniovi.ips.myshop.model.people;
 
 public abstract class Person {
 	
-	protected String id, name;
-	protected String surname;
+	protected String id, name, surname;
 	
 	public Person(String id, String name, String surname) {
 		this.setId(id);
@@ -15,7 +14,7 @@ public abstract class Person {
 		return this.name;
 	}
 	
-	public void setName(String name) {
+	private void setName(String name) {
 		this.name = name;
 	}
 
@@ -23,7 +22,7 @@ public abstract class Person {
 		return this.surname;
 	}
 	
-	public void setSurname(String surname) {
+	private void setSurname(String surname) {
 		this.surname = surname;
 	}
 	
@@ -31,7 +30,7 @@ public abstract class Person {
 		return this.id;
 	}
 	
-	public void setId(String id) {
+	private void setId(String id) {
 		this.id = id;
 	}
 

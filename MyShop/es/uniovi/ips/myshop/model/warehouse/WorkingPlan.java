@@ -4,7 +4,7 @@ import java.util.List;
 
 import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.order.Order;
-import es.uniovi.ips.myshop.model.order.Order.Estado;
+import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 import es.uniovi.ips.myshop.model.product.Product;
 
@@ -37,11 +37,11 @@ public class WorkingPlan {
 			if(dp.recogido==false)
 				return false;
 			if(dp.incidencia.solved==false) {
-				pedido.setEstado(Estado.INCIDENCIA);
+				pedido.setEstado(Status.INCIDENCIA);
 				return false;
 			}
 		}
-		pedido.setEstado(Estado.EMPAQUETANDO);
+		pedido.setEstado(Status.EMPAQUETANDO);
 		return true;
 	}
 	

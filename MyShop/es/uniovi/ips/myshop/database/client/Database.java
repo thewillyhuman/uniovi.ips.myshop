@@ -1,4 +1,4 @@
-package es.uniovi.ips.myshop.logic.connectors;
+package es.uniovi.ips.myshop.database.client;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -27,20 +27,19 @@ public abstract class Database {
 	protected CallableStatement cs = null;
 	protected ResultSet rs = null;
 
-	protected Database() {
-	}
+	protected Database() {}
 
 	/**
 	 * Closes a given connection.
 	 * 
-	 * @param connection
-	 *            to be closed.
+	 * @param connection to be closed.
 	 */
 	public void closeConnection() {
 		try {
 			this.conn.commit();
 			this.conn.close();
-			System.out.println("--> Connection " + this.conn.toString() + " has been closed succesfully.");
+			System.out.println("--> Connection " + this.conn.toString()
+					+ " has been closed succesfully.");
 		} catch (SQLException e) {
 			System.err.println("The connection couldn't be closed.");
 			e.printStackTrace();
@@ -50,37 +49,27 @@ public abstract class Database {
 	/**
 	 * Opens a database connection.
 	 * 
-	 * @param protocol
-	 *            to use by the connection.
-	 * @param vendor
-	 *            of the database.
-	 * @param driver
-	 *            for the connection.
-	 * @param server
-	 *            address.
-	 * @param port
-	 *            where the connection must call.
-	 * @param database
-	 *            name.
-	 * @param user
-	 *            of the connection.
-	 * @param password
-	 *            of the connection.
+	 * @param protocol to use by the connection.
+	 * @param vendor of the database.
+	 * @param driver for the connection.
+	 * @param server address.
+	 * @param port where the connection must call.
+	 * @param database name.
+	 * @param user of the connection.
+	 * @param password of the connection.
 	 * 
 	 * @return the opened connection.
-	 * @throws SQLException
-	 *             if there is any error while opening the database.
+	 * @throws SQLException if there is any error while opening the database.
 	 */
-	public abstract Connection connectDatabase(String protocol, String vendor, String driver, String server,
-			String port, String databaseName, String user, String password) throws SQLException;
+	public abstract Connection connectDatabase(String protocol, String vendor,
+			String driver, String server, String port, String databaseName,
+			String user, String password) throws SQLException;
 
 	/**
 	 * Executes a sql in a given connection.
 	 * 
-	 * @param sql
-	 *            sentence to execute.
-	 * @param connection
-	 *            where the sql will be executed.
+	 * @param sql sentence to execute.
+	 * @param connection where the sql will be executed.
 	 * @return the result set.
 	 * 
 	 * @throws SQLException
@@ -94,15 +83,13 @@ public abstract class Database {
 	/**
 	 * Executes a sql prepared sentence in a given connection.
 	 * 
-	 * @param sql
-	 *            to be executed
-	 * @param parameters
-	 *            for the sentence.
+	 * @param sql to be executed
+	 * @param parameters for the sentence.
 	 * @return the result of the sentence execution.
-	 * @throws SQLException
-	 *             if any error.
+	 * @throws SQLException if any error.
 	 */
-	public ResultSet executeSQL(String sql, Object... parameters) throws SQLException {
+	public ResultSet executeSQL(String sql, Object... parameters)
+			throws SQLException {
 		this.psQuery = this.conn.prepareStatement(sql);
 		for (int i = 0; i < parameters.length; i++) {
 			this.psQuery.setObject(i + 1, parameters[i]);
@@ -122,7 +109,8 @@ public abstract class Database {
 	 * @param parameters
 	 * @throws SQLException
 	 */
-	public void executeUpdate(String sql, Object... parameters) throws SQLException {
+	public void executeUpdate(String sql, Object... parameters)
+			throws SQLException {
 		this.psQuery = this.conn.prepareStatement(sql);
 		for (int i = 0; i < parameters.length; i++) {
 			this.psQuery.setObject(i + 1, parameters[i]);
@@ -142,8 +130,7 @@ public abstract class Database {
 	/**
 	 * Returns the number of columns the ResultSet has.
 	 * 
-	 * @param rs
-	 *            to compute.
+	 * @param rs to compute.
 	 * @return the number of rows that it contains.
 	 * @throws SQLException
 	 */

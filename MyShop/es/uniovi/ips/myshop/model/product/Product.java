@@ -25,11 +25,11 @@ public class Product {
 	 * @param descripcion of the product.
 	 * @param precio of the product.
 	 */
-	public Product(String IDProd, String descripcion, double precio) {
+	public Product(String IDProd, String descripcion, double precio, ProductLocation location) {
 		setIDProducto(IDProd);
 		setDescription(descripcion);
 		setPrecio(precio);
-		localizacion = new ProductLocation();
+		localizacion = location;
 	}
 
 	/**

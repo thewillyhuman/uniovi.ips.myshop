@@ -14,7 +14,7 @@ public class Incidence {
 		return id;
 	}
 
-	public void setId(String id) {
+	private void setId(String id) {
 		this.id = id;
 	}
 
@@ -22,7 +22,7 @@ public class Incidence {
 		return descripcion;
 	}
 
-	public void setDescripcion(String descripcion) {
+	private void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 }
