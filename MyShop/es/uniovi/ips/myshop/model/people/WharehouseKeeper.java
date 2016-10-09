@@ -9,7 +9,7 @@ public class WharehouseKeeper extends Person {
 	}
 	
 	public void asignarOT(WorkingPlan ot) {
-		
+		// do something...
 	}
 
 	@Override

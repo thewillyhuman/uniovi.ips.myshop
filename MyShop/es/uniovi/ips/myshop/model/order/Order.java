@@ -23,7 +23,7 @@ public class Order {
 	private Customer cliente;
 	private List<OrderDetail> productos;
 	private Date fecha;
-	Status estado;
+	private Status estado;
 
 	public enum Status {
 		EN_PROCESO, ASIGNADO, INCIDENCIA, EMPAQUETANDO

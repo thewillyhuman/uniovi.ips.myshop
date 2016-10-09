@@ -10,11 +10,11 @@ import es.uniovi.ips.myshop.model.product.Product;
 
 public class WorkingPlan {
 	
-	WharehouseKeeper almacenero;
-	Order pedido;
+	private WharehouseKeeper almacenero;
+	private Order pedido;
 	
 	public WorkingPlan(Order pedido, WharehouseKeeper almacenero) {
-		this.almacenero = almacenero;
+		this.setAlmacenero(almacenero);
 		this.pedido = pedido;
 	}
 	
@@ -51,6 +51,14 @@ public class WorkingPlan {
 	
 	public String getAlbaranes() {
 		return null;
+	}
+
+	public WharehouseKeeper getAlmacenero() {
+		return almacenero;
+	}
+
+	public void setAlmacenero(WharehouseKeeper almacenero) {
+		this.almacenero = almacenero;
 	}
 
 }
