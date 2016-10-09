@@ -1,6 +1,7 @@
 <img src="myshop-logo-black.png" alt="myShop" height="70"><p>
 # My Shop Project from IPS Subject at University of Oviedo.
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/881dfec7ffa8472097df1d3b1b8a8313)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ZenMaster91/uniovi.ips.myshop&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.com/ZenMaster91/uniovi.ips.myshop.svg?token=TtyrRtm6h2Zz1Kj9USKu&branch=travis-integration)](https://travis-ci.com/ZenMaster91/uniovi.ips.myshop)
 
 **Welcome to myShop!**
 
