@@ -14,14 +14,7 @@ import es.uniovi.ips.myshop.database.client.MySQLDatabase;
  */
 public class Controller {
 	
-	private static Database db;
-	
-	/**
-	 * Will assign a new MySQL database object to the data source.
-	 */
-	public Controller() {
-		db = new MySQLDatabase();
-	}
+	private static Database db = new MySQLDatabase();
 	
 	public static Database getDatabase() {
 		return db;
