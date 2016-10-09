@@ -6,7 +6,7 @@ public class Test {
 
 	@org.junit.Test
 	public void test() {
-		assertEquals(true,true);
+		assertEquals(true,false);
 	}
 
 }
