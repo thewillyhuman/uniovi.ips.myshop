@@ -1,9 +1,13 @@
 package es.uniovi.ips.myshop.connectors;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import es.uniovi.ips.myshop.database.Connector;
 import es.uniovi.ips.myshop.model.order.Order;
+import es.uniovi.ips.myshop.model.order.OrderDetail;
+import es.uniovi.ips.myshop.model.order.Order.Status;
+import es.uniovi.ips.myshop.properties.Properties;
 
 /**
  * 
@@ -26,12 +30,25 @@ public class AddOrders extends Connector {
 	 *             database or executing the query.
 	 */
 	public AddOrders(Order order) throws SQLException {
-		super.run();
 		this.order = order;
+		super.run();
 	}
 
 	@Override
-	protected void query() {
-		super.sql = order.toString();
+	protected void query() throws SQLException {
+		String status;
+		if(order.getEstado() == Status.PENDIENTE)
+			status = "PENDIENTE";
+		else if(order.getEstado() == Status.SOLICITADO)
+			status = "SOLICITADO";
+		else
+			status = "LISTO";
+			
+		String date = new SimpleDateFormat("yyyy-MM-dd").format(order.getDate());
+		super.db.executeUpdate(Properties.getString("sql.addOrder"), date, status, order.getCliente().getId());
+		for(OrderDetail od : order.getProductos()) {
+			// Add the relation to RPP but waiting to fix RPP;
+			od.toString();
+		}
 	}
 }

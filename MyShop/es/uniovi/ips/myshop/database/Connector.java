@@ -40,5 +40,5 @@ public abstract class Connector {
 		new DatabaseConnection(db).closeConnection();
 	}
 
-	protected abstract void query();
+	protected abstract void query() throws SQLException;
 }
