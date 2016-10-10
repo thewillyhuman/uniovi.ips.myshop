@@ -1,1 +1,0 @@
-# uniovi.ips.myshop
