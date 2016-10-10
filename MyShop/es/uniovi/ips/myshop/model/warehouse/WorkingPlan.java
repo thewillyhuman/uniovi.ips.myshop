@@ -8,57 +8,102 @@ import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 import es.uniovi.ips.myshop.model.product.Product;
 
+/**
+ * 
+ * WorkingPlan.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 1010161155
+ * @since 10 de oct. de 2016
+ * @formatter Oviedo Computing Community
+ */
 public class WorkingPlan {
 	
 	private WharehouseKeeper almacenero;
-	private Order pedido;
+	private Order order;
 	
-	public WorkingPlan(Order pedido, WharehouseKeeper almacenero) {
+	public WorkingPlan(Order order, WharehouseKeeper almacenero) {
 		this.setAlmacenero(almacenero);
-		this.pedido = pedido;
+		this.order = order;
 	}
 	
-	public List<Product> getOTShorted() {
+	/**
+	 * Gets the current working plan sorted.
+	 * 
+	 * @return the working plan sorted.
+	 */
+	public List<Product> getWorkingPlanSorted() {
 		return null;
 	}
 	
-	public boolean recogerProducto(String id) {
-		for(OrderDetail dp : pedido.getProductos()) {
-			if(dp.getProducto().getIDProducto()==id) {
-				dp.recogido = true;
+	/**
+	 * Collects a single product.
+	 * 
+	 * @param ID of the product collected.
+	 * @return true if the product has been collected. False otherwise.
+	 */
+	public boolean collectProduct(String ID) {
+		for(OrderDetail dp : order.getProductos()) {
+			if(dp.getProducto().getIDProducto()==ID) {
+				dp.collected = true;
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public boolean marcarParaEmpaquetado() {
-		for(OrderDetail dp : pedido.getProductos()) {
-			if(!dp.recogido)
+	/**
+	 * Mark the whole working plan for packaging.
+	 * 
+	 * @return true if possible. False otherwise.
+	 */
+	public boolean markForPackaging() {
+		for(OrderDetail dp : order.getProductos()) {
+			if(!dp.collected)
 				return false;
-			if(!dp.incidencia.solved) {
-				pedido.setEstado(Status.INCIDENCIA);
+			if(!dp.incidence.solved) {
+				order.setStatus(Status.INCIDENCIA);
 				return false;
 			}
 		}
-		pedido.setEstado(Status.EMPAQUETANDO);
+		order.setStatus(Status.EMPAQUETANDO);
 		return true;
 	}
 	
+	/**
+	 * Gets the shipping information.
+	 * 
+	 * @return the shipping information.
+	 */
 	public String getEtiquetaEnvio() {
-		return null;
+		return order.printShippingInfo();
 	}
 	
+	/**
+	 * Gets the bill for the order.
+	 * 
+	 * @return the bill for the order.
+	 */
 	public String getAlbaranes() {
-		return null;
+		return order.printBill();
 	}
 
+	/**
+	 * Gives the warehouse keeper that has assigned this working plan.
+	 * 
+	 * @return the warehouse keeper assigned to this working plan.
+	 */
 	public WharehouseKeeper getAlmacenero() {
 		return almacenero;
 	}
 
-	public void setAlmacenero(WharehouseKeeper almacenero) {
-		this.almacenero = almacenero;
+	/**
+	 * Sets the current warehouse keeper.
+	 * 
+	 * @param warehouseKepper assigned to this plan.
+	 */
+	public void setAlmacenero(WharehouseKeeper warehouseKepper) {
+		this.almacenero = warehouseKepper;
 	}
 
 }

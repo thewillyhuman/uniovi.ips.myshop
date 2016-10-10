@@ -1,14 +1,14 @@
-package es.uniovi.ips.myshop.resourcebundle;
+package es.uniovi.ips.myshop.properties;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class Bundle {
+public class Properties {
 	
 	private static final String BUNDLE_NAME = "es.uniovi.ips.myshop.properties.MyShop.properties";
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	private Bundle() {}
+	private Properties() {}
 
 	public static String getString(String key) {
 		try {

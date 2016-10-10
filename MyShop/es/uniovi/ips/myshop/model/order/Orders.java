@@ -7,14 +7,35 @@ import es.uniovi.ips.myshop.connectors.AddOrders;
 import es.uniovi.ips.myshop.connectors.GetOrders;
 import es.uniovi.ips.myshop.model.order.Order.Status;
 
+/**
+ * 
+ * Orders.java
+ *
+ * @author admin
+ * @version 1010161125
+ * @since 10 de oct. de 2016
+ * @formatter Oviedo Computing Community
+ */
 public class Orders {
 	
-	public static void addPedido(Order order) throws SQLException {
+	/**
+	 * Adds an order to the database.
+	 * 
+	 * @param order to be added to the database.
+	 * @throws SQLException if there's any error while writing in the database.
+	 */
+	public static void addOrder(Order order) throws SQLException {
 		new AddOrders(order);
 	}
 	
-	public static List<Order> getPedidosPorEstado(Status estado) {
-		return new GetOrders().getOrdersByStatus(estado);
+	/**
+	 * Gets a list of the orders that match with the given status.
+	 * 
+	 * @param status that orders must match.
+	 * @return a list of orders that matches with the status
+	 */
+	public static List<Order> getOrdersByStatus(Status status) {
+		return new GetOrders().getOrdersByStatus(status);
 	}
 
 }

@@ -1,8 +1,17 @@
 package es.uniovi.ips.myshop.model.warehouse.incidences;
 
+/**
+ * 
+ * Incidence.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 1010161149
+ * @since 10 de oct. de 2016
+ * @formatter Oviedo Computing Community
+ */
 public class Incidence {
 
-	private String id, descripcion;
+	private String ID, description;
 	public boolean solved = false;
 
 	public Incidence(String id, String descripcion) {
@@ -10,19 +19,37 @@ public class Incidence {
 		this.setDescripcion(descripcion);
 	}
 
+	/**
+	 * Gets the ID of the incidence.
+	 * 
+	 * @return the ID of the incidence.
+	 */
 	public String getId() {
-		return id;
+		return ID;
 	}
 
-	private void setId(String id) {
-		this.id = id;
+	/**
+	 * Sets the ID for a given incidence.
+	 * 
+	 * @param ID of the incidence.
+	 */
+	private void setId(String ID) {
+		this.ID = ID;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	/**
+	 * Gets the description of the Incidence.
+	 * @return
+	 */
+	public String getDescription() {
+		return description;
 	}
 
-	private void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	/**
+	 * Sets the description of the incidence.
+	 * @param description of the incidence.
+	 */
+	private void setDescripcion(String description) {
+		this.description = description;
 	}
 }

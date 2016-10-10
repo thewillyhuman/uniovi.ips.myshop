@@ -13,17 +13,17 @@ import es.uniovi.ips.myshop.model.product.Product;
  * Order.java represents an order in the system.
  *
  * @author Guillermo Facundo Colunga
- * @version 081020162213
+ * @version 1010161112
  * @since 8 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
 public class Order {
 
-	private String idPedido;
-	private Customer cliente;
-	private List<OrderDetail> productos;
-	private Date fecha;
-	private Status estado;
+	private String orderID;
+	private Customer customer;
+	private List<OrderDetail> products;
+	private Date date;
+	private Status status;
 
 	public enum Status {
 		EN_PROCESO, ASIGNADO, INCIDENCIA, EMPAQUETANDO
@@ -32,90 +32,167 @@ public class Order {
 	/**
 	 * Creates an empty order where we will be able to add and delete products.
 	 * 
-	 * @param idPedido is the id of the order.
-	 * @param cliente 
-	 * @param fecha
+	 * @param orderID is the id of the order.
+	 * @param customer who own the order.
+	 * @param date where the order is taking place.
 	 */
-	public Order(String idPedido, Customer cliente, Date fecha) {
-		setIdPedido(idPedido);
-		setCliente(cliente);
-		setDate(fecha);
-		productos = new ArrayList<OrderDetail>();
-		estado = Status.EN_PROCESO;
+	public Order(String orderID, Customer customer, Date date) {
+		setIdPedido(orderID);
+		setCliente(customer);
+		setDate(date);
+		products = new ArrayList<OrderDetail>();
+		status = Status.EN_PROCESO;
 	}
 
-	private void setCliente(Customer cliente) {
-		this.cliente = cliente;
+	/**
+	 * Sets the customer as the order owner.
+	 * 
+	 * @param customer to be set in the order.
+	 */
+	private void setCliente(Customer customer) {
+		this.customer = customer;
 	}
 
+	/**
+	 * Sets an ID for the order.
+	 * 
+	 * @param idPedido is the order id, given by the database.
+	 */
 	private void setIdPedido(String idPedido) {
-		this.idPedido = idPedido;
+		this.orderID = idPedido;
 	}
 
+	/**
+	 * Gives the id of the current order.
+	 * 
+	 * @return the id of the current order.
+	 */
 	public String getIdPedido() {
-		return this.idPedido;
+		return this.orderID;
 	}
 
+	/**
+	 * Gets the customer who made the order.
+	 * 
+	 * @return the customer who made the order.
+	 */
 	public Customer getCliente() {
-		return this.cliente;
+		return this.customer;
 	}
 
-	public void addProducto(Product producto, int cantidad) {
-		productos.add(new OrderDetail(producto, cantidad));
+	/**
+	 * Adds a product to the order with its quantity.
+	 * 
+	 * @param product to be added to the order.
+	 * @param quantity to be added of the given product.
+	 */
+	public void addProduct(Product product, int quantity) {
+		products.add(new OrderDetail(product, quantity));
 	}
-	
-	public void modificarCantidad(Product producto, int nuevaCantidad) {
-		for(OrderDetail dp : productos) {
-			if(dp.getProducto().equals(producto))
-				dp.setCantidad(nuevaCantidad);
+
+	/**
+	 * Changes the quantity of a given product.
+	 * 
+	 * @param product to change the quantity.
+	 * @param newQuantity for the given product.
+	 */
+	public void modifyQuantity(Product product, int newQuantity) {
+		for (OrderDetail dp : products) {
+			if (dp.getProducto().equals(product))
+				dp.setQuantity(newQuantity);
 		}
 	}
 
-	public void removeProducto(Product producto) {
-		for (int i = 0; i < productos.size(); i++) {
-			if (productos.get(i).getProducto().getIDProducto() == producto
+	/**
+	 * Deletes a product from the order.
+	 * 
+	 * @param product to be be deleted.
+	 */
+	public void removeProduct(Product product) {
+		for (int i = 0; i < products.size(); i++) {
+			if (products.get(i).getProducto().getIDProducto() == product
 					.getIDProducto()) {
-				productos.remove(i);
+				products.remove(i);
 				break;
 			}
 		}
 	}
 
+	/**
+	 * Gives a list with all the products in the order.
+	 * 
+	 * @return a list with all the products in the order.
+	 */
 	public List<OrderDetail> getProductos() {
-		return this.productos;
+		return this.products;
 	}
 
+	/**
+	 * Gets the date where the order was completed.
+	 * 
+	 * @return the date where the order was completed.
+	 */
 	public Date getDate() {
-		return this.fecha;
+		return this.date;
 	}
 
+	/**
+	 * Sets the date for the order.
+	 * 
+	 * @param fecha
+	 */
 	private void setDate(Date fecha) {
-		this.fecha = fecha;
+		this.date = fecha;
 	}
 
-	public double getPrecioTotal() {
+	/**
+	 * Gets the total price for the order.
+	 * 
+	 * @return a double containing the total price of the order.
+	 */
+	public double getTotalPrice() {
 		double res = 0.0;
-		for (OrderDetail dp : productos)
+		for (OrderDetail dp : products)
 			res += dp.getProducto().getPrecio() * dp.getCantidad();
 		return res;
 	}
 
+	/**
+	 * Gets the size of the order.
+	 * 
+	 * @return the size of the order.
+	 */
 	public int size() {
 		int res = 0;
-		for (OrderDetail dp : productos)
+		for (OrderDetail dp : products)
 			res += dp.getCantidad();
 		return res;
 	}
 
-	public void setEstado(Status estado) {
-		this.estado = estado;
+	/**
+	 * Sets the current status for the order.
+	 * 
+	 * @param status of the order.
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
+	/**
+	 * Gets the status of the order.
+	 * 
+	 * @return the status of the order.
+	 */
 	public Status getEstado() {
-		return this.estado;
+		return this.status;
 	}
 
-	public String printEtiquetaEnvio() {
+	/**
+	 * Gives a string containing all the shipping info formatted.
+	 * 
+	 * @return the shipping info formatted.
+	 */
+	public String printShippingInfo() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getCliente().getName() + " " + getCliente().getSurname()
 				+ "\n");
@@ -125,13 +202,18 @@ public class Order {
 		return sb.toString();
 	}
 
-	public String printAlbarán() {
+	/**
+	 * Gives a string containing the bill.
+	 * 
+	 * @return a formatted string containing the bill.
+	 */
+	public String printBill() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("==== ALBARÁN DE COMPRA ====\n").append("MY SHOP\n\n")
-				.append("PRODUCTO\t\tCANTIDAD\t\tPRECIO/U\t\tTOTAL\n");
-		for (OrderDetail dp : productos) {
-			sb.append(dp.getProducto().getDescripcion() + "\t\t"
-					+ dp.getCantidad() + "\t\t" + dp.getProducto().getPrecio()
+		sb.append("==== ALBARÁN DE COMPRA ====\n").append("MY SHOP\n\n").append(
+				"PRODUCTO\t\tCANTIDAD\t\tPRECIO/U\t\tTOTAL\n");
+		for (OrderDetail dp : products) {
+			sb.append(dp.getProducto().getDescripcion() + "\t\t" + dp
+					.getCantidad() + "\t\t" + dp.getProducto().getPrecio()
 					+ "\t\t" + dp.getCantidad() * dp.getProducto().getPrecio()
 					+ "\n");
 		}
