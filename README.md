@@ -7,7 +7,7 @@
 
 My Shop is a project developed for the Software Development Process Enginiering at University of Oviedo by **Guillermo Facuno**, **Carlos López**, **Paloma Sierra** and **Héctor Apellido**. This project is based for a theoretical company that sells computers an other electronic devices to a) other business and b) home users. My Shop must allow the company to sell their products throw the application and at the same time has to allow the warehouse keeper to track the orders and bills. Of course more functionalities will be added when required by the company.
 
-## Documentation
+## Documentation (Not avaliable yet!)
 You will find all the correspnding documentation at https://zenmaster91.github.com/uniovi.ips.myshop. Files included in the documentation are:
 * Java Code Documentation.
 * Mockups and User Interface Desicions.
