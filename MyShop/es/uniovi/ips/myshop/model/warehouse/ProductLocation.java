@@ -2,11 +2,16 @@ package es.uniovi.ips.myshop.model.warehouse;
 
 import es.uniovi.ips.myshop.model.product.Product;
 
+/**
+ * 
+ * ProductLocation.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 1010161154
+ * @since 10 de oct. de 2016
+ * @formatter Oviedo Computing Community
+ */
 public class ProductLocation {
-
-	public final static int N_PASILLOS = 2;
-	public final static int N_POSICIONES = 10;
-	public final static int N_ALTURAS = 5;
 
 	private Product prod;
 	private int pasillo, posicion, altura;

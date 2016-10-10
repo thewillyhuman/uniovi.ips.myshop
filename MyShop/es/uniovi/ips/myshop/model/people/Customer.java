@@ -1,5 +1,14 @@
 package es.uniovi.ips.myshop.model.people;
 
+/**
+ * 
+ * Customer.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 1010161124
+ * @since 10 de oct. de 2016
+ * @formatter Oviedo Computing Community
+ */
 public class Customer extends Person{
 	
 	private String dni;
@@ -47,6 +56,6 @@ public class Customer extends Person{
 	
 	@Override
 	public String toString() {
-		return "> Almacenero >> " + name + ", " + surname + ". ID: " + id;
+		return "> Almacenero >> " + name + ", " + surname + ". ID: " + ID;
 	}
 }

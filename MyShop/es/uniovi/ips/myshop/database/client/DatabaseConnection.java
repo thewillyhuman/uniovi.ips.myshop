@@ -3,7 +3,7 @@ package es.uniovi.ips.myshop.database.client;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import es.uniovi.ips.myshop.resourcebundle.Bundle;
+import es.uniovi.ips.myshop.properties.Properties;
 
 /**
  * 
@@ -38,10 +38,10 @@ public class DatabaseConnection {
 	 * @throws SQLException if there's errors while connecting to the database.
 	 */
 	private Connection openDefaultConnection() throws SQLException {
-		return db.connectDatabase(Bundle.getString(""), Bundle.getString(""),
-				Bundle.getString(""), Bundle.getString(""),
-				Bundle.getString(""), Bundle.getString(""),
-				Bundle.getString(""), Bundle.getString(""));
+		return db.connectDatabase(Properties.getString(""), Properties.getString(""),
+				Properties.getString(""), Properties.getString(""),
+				Properties.getString(""), Properties.getString(""),
+				Properties.getString(""), Properties.getString(""));
 	}
 
 	/**

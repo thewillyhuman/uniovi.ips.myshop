@@ -1,5 +1,14 @@
 package es.uniovi.ips.myshop.model.people;
 
+/**
+ * 
+ * Address.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 1010161123
+ * @since 10 de oct. de 2016
+ * @formatter Oviedo Computing Community
+ */
 public class Address {
 	
 	private String street, city, state, zipCode;
