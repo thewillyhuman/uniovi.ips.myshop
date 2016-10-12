@@ -32,7 +32,7 @@ public class AddProducts extends Connector {
 
 	@Override
 	protected void query() {
-		super.sql = product.toString();
+		//super.sql = product.toString();
 	}
 
 }

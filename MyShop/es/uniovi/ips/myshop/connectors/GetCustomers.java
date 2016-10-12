@@ -34,9 +34,9 @@ public class GetCustomers extends Connector {
 	 */
 	public Customer getCustomer(String customerID) throws SQLException {
 		this.customerID = customerID;
-		new DatabaseConnection(db);
+		db.connect();
 		query();
-		new DatabaseConnection(db).closeConnection();
+		db.closeConnection();
 		return customer;
 	}
 

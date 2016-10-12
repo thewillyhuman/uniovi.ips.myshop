@@ -18,7 +18,6 @@ import es.uniovi.ips.myshop.database.client.DatabaseConnection;
 public abstract class Connector {
 
 	protected Database db;
-	protected String sql;
 
 	/**
 	 * Assigns the database to hold.
@@ -35,9 +34,7 @@ public abstract class Connector {
 	 * @throws SQLException if there's any error while connecting, disconnecting or executing the query in the database.
 	 */
 	protected void run() throws SQLException {
-		new DatabaseConnection(db);
-		this.query();
-		new DatabaseConnection(db).closeConnection();
+
 	}
 
 	protected abstract void query() throws SQLException;

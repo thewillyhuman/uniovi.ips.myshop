@@ -61,9 +61,7 @@ public abstract class Database {
 	 * @return the opened connection.
 	 * @throws SQLException if there is any error while opening the database.
 	 */
-	public abstract Connection connectDatabase(String protocol, String vendor,
-			String driver, String server, String port, String databaseName,
-			String user, String password) throws SQLException;
+	public abstract Connection connect() throws SQLException;
 
 	/**
 	 * Executes a sql in a given connection.
