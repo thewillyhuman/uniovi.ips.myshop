@@ -7,8 +7,17 @@ import java.sql.SQLException;
 public class MySQLDatabase extends Database {
 
 	public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+	public static final String MYSQL_VENDOR = "mysql";
+	private String user, password, url;
+	private boolean useSSL = false;
+	private boolean relaxAutocommit = true;
 
-	public MySQLDatabase() {
+	public MySQLDatabase(String protocol, String vendor, String server, String port, String databaseName, String user,
+			String password) {
+		this.user = user;
+		this.password = password;
+		url = protocol + ":" + vendor + "://" + server + ":" + port + "/" + databaseName + "?useSSL=" + useSSL
+				+ "&relaxAutoCommit=" + relaxAutocommit;
 		try {
 			Class.forName(MYSQL_DRIVER);
 		} catch (ClassNotFoundException e) {
@@ -18,12 +27,9 @@ public class MySQLDatabase extends Database {
 	}
 
 	@Override
-	public Connection connectDatabase(String protocol, String vendor, String driver, String server, String port,
-			String databaseName, String user, String password) throws SQLException {
-		String url = protocol + ":" + vendor + "://" + server + ":" + port + "/" + databaseName;
+	public Connection connect() throws SQLException {
 		this.conn = DriverManager.getConnection(url, user, password);
 		System.out.println("--> Connection " + this.conn.toString() + " has been oppened succesfully.");
 		return this.conn;
 	}
-
 }

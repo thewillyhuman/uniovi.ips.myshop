@@ -17,6 +17,7 @@ import javax.swing.JButton;
 
 public class EmpaquetadoRecogidaPedidos extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTabbedPane tbpnEmpaquetadoRecogida;
 	private JPanel pnEmpaquetado;

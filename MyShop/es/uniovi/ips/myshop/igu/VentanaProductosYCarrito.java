@@ -4,11 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
-
-import model.Producto;
-
+import es.uniovi.ips.myshop.model.product.Product;
 import java.awt.EventQueue;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -36,11 +33,11 @@ public class VentanaProductosYCarrito extends JFrame {
 	private JScrollPane scrollPane;
 	private JTextArea txaCarrito;
 	private JPanel pnBotones;
-	private JButton btAñadir;
+	private JButton btAÃ±adir;
 	private JButton btBorrar;
 	private JButton btAceptar;
 	
-	private List<Producto> listaProductos = new ArrayList<Producto>();
+	private List<Product> listaProductos = new ArrayList<Product>();
 
 	/**
 	 * Launch the application.
@@ -127,17 +124,17 @@ public class VentanaProductosYCarrito extends JFrame {
 		if (pnBotones == null) {
 			pnBotones = new JPanel();
 			pnBotones.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-			pnBotones.add(getBtAñadir());
+			pnBotones.add(getBtAÃ±adir());
 			pnBotones.add(getBtBorrar());
 			pnBotones.add(getBtAceptar());
 		}
 		return pnBotones;
 	}
-	private JButton getBtAñadir() {
-		if (btAñadir == null) {
-			btAñadir = new JButton("A\u00F1adir");
+	private JButton getBtAÃ±adir() {
+		if (btAÃ±adir == null) {
+			btAÃ±adir = new JButton("A\u00F1adir");
 		}
-		return btAñadir;
+		return btAÃ±adir;
 	}
 	private JButton getBtBorrar() {
 		if (btBorrar == null) {
@@ -155,14 +152,14 @@ public class VentanaProductosYCarrito extends JFrame {
 	private void cargarProductosEnLista() {
 		Container cont = new Container();
 
-		for (Producto c : listaProductos) {
+		for (Product c : listaProductos) {
 			ProductoListaPanel aux = new ProductoListaPanel(c);
-			aux.getBtAñadir().addActionListener(new ActionListener() {
+			aux.getBtAÃ±adir().addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// Loading the second pane.
-					añadirAListaProductos(c);
+					aÃ±adirAListaProductos(c);
 				}
 			});
 			aux.getBtBorrar().addActionListener(new ActionListener() {
@@ -187,11 +184,11 @@ public class VentanaProductosYCarrito extends JFrame {
 		repaint();
 	}
 	
-	private void añadirAListaProductos(Producto producto){
+	private void aÃ±adirAListaProductos(Product producto){
 		//TODO
 	}
 	
-	private void borrarDeListaProductos(Producto producto){
+	private void borrarDeListaProductos(Product producto){
 		//TODO
 	}
 }

@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
-import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -20,6 +19,7 @@ import javax.swing.JButton;
 
 public class AsignacionPedidosAlmaceneros extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel pnAsignacionProductos;
 	private DefaultTableModel modeloTabla;

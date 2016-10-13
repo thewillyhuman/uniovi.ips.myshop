@@ -26,7 +26,7 @@ public class Order {
 	private Status status;
 
 	public enum Status {
-		EN_PROCESO, ASIGNADO, INCIDENCIA, EMPAQUETANDO
+		PENDIENTE, SOLICITADO, LISTO, EMPAQUETANDO
 	}
 
 	/**
@@ -41,7 +41,15 @@ public class Order {
 		setCliente(customer);
 		setDate(date);
 		products = new ArrayList<OrderDetail>();
-		status = Status.EN_PROCESO;
+		status = Status.PENDIENTE;
+	}
+	
+	public Order(String orderID, Customer customer, Date date, Status status) {
+		setIdPedido(orderID);
+		setCliente(customer);
+		setDate(date);
+		products = new ArrayList<OrderDetail>();
+		this.status = status;
 	}
 
 	/**

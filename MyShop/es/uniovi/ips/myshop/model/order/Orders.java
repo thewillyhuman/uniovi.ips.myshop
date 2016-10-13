@@ -33,8 +33,9 @@ public class Orders {
 	 * 
 	 * @param status that orders must match.
 	 * @return a list of orders that matches with the status
+	 * @throws SQLException 
 	 */
-	public static List<Order> getOrdersByStatus(Status status) {
+	public static List<Order> getOrdersByStatus(Status status) throws SQLException {
 		return new GetOrders().getOrdersByStatus(status);
 	}
 
