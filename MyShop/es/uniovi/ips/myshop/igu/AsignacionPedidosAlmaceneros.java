@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.CardLayout;
 
 public class AsignacionPedidosAlmaceneros extends JFrame {
 
@@ -24,7 +25,6 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 	private JPanel pnAsignacionProductos;
 	private DefaultTableModel modeloTabla;
 	private JScrollPane scpAsignacion;
-	private JTable tbAsignacion;
 	private JPanel pnDatosAlmacenero;
 	private JLabel lblAlmacenero;
 	private JTextField txAlmacenero;
@@ -32,6 +32,8 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 	private JTextField txID;
 	private JPanel pnBotones;
 	private JButton btAceptar;
+	private JPanel pnAsignacion;
+	private JPanel pnEleccionAlmacenero;
 
 	/**
 	 * Launch the application.
@@ -60,9 +62,10 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		contentPane.add(getPnAsignacionProductos(), BorderLayout.CENTER);
+		contentPane.setLayout(new CardLayout(0, 0));
+		contentPane.add(getPnAsignacionProductos(), "name_14193795799254");
+		contentPane.add(getPnEleccionAlmacenero(), "name_14207797347604");
 		rellenarTabla();
 	}
 	private JPanel getPnAsignacionProductos() {
@@ -78,23 +81,9 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 	private JScrollPane getScpAsignacion() {
 		if (scpAsignacion == null) {
 			scpAsignacion = new JScrollPane();
-			scpAsignacion.setViewportView(getTbAsignacion());
+			scpAsignacion.setViewportView(getPnAsignacion());
 		}
 		return scpAsignacion;
-	}
-	private JTable getTbAsignacion() {
-		if (tbAsignacion == null) {
-			String[] columnas = { "Pedido","Nombre Cliente","DNI Cliente", "Fecha Pedido" };
-			modeloTabla = new DefaultTableModel(columnas, 0) {
-				private static final long serialVersionUID = 1L;
-
-				public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-			tbAsignacion = new JTable(modeloTabla);
-		}
-		return tbAsignacion;
 	}
 	private JPanel getPnDatosAlmacenero() {
 		if (pnDatosAlmacenero == null) {
@@ -153,5 +142,17 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 	
 	private void rellenarTabla() {
 		// TODO Auto-generated method stub
+	}
+	private JPanel getPnAsignacion() {
+		if (pnAsignacion == null) {
+			pnAsignacion = new JPanel();
+		}
+		return pnAsignacion;
+	}
+	private JPanel getPnEleccionAlmacenero() {
+		if (pnEleccionAlmacenero == null) {
+			pnEleccionAlmacenero = new JPanel();
+		}
+		return pnEleccionAlmacenero;
 	}
 }

@@ -13,6 +13,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 import javax.swing.JTextArea;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 
 public class VentanaProductosYCarrito extends JFrame {
@@ -35,8 +38,7 @@ public class VentanaProductosYCarrito extends JFrame {
 	private JPanel pnProducts;
 	private JScrollPane scpProducts;
 	private JPanel pnDescripcion;
-	private JScrollPane scrollPane;
-	private JTextArea txaCarrito;
+	private JScrollPane scpCarrito;
 	private JPanel pnBotones;
 	private JButton btAñadir;
 	private JButton btBorrar;
@@ -44,6 +46,11 @@ public class VentanaProductosYCarrito extends JFrame {
 	
 	private Map<Product,Integer> mapaProductos = new HashMap<Product,Integer>();
 	private List<Product> listaProductos = new ArrayList<Product>();
+	private JPanel pnCarritoDescripcion;
+	private JLabel lbIndiceProducto;
+	private JLabel lbIndicePrecio;
+	private JLabel lbIndiceCantidad;
+	private JLabel lbIndiceTotal;
 
 	/**
 	 * Launch the application.
@@ -78,15 +85,16 @@ public class VentanaProductosYCarrito extends JFrame {
 		contentPane.add(getPnCarrito(), BorderLayout.CENTER);
 		contentPane.add(getPnProducts(), BorderLayout.WEST);
 		contentPane.add(getPnDescripcion(), BorderLayout.SOUTH);
-		actualizarCarrito();
 		cargarProductsEnLista();
+		cargarProductosEnCarrito();
 	}
 
 	private JPanel getPnCarrito() {
 		if (pnCarrito == null) {
 			pnCarrito = new JPanel();
 			pnCarrito.setLayout(new BorderLayout(0, 0));
-			pnCarrito.add(getScrollPane(), BorderLayout.CENTER);
+			pnCarrito.add(getScpCarrito(), BorderLayout.CENTER);
+			pnCarrito.add(getPnCarritoDescripcion(), BorderLayout.NORTH);
 		}
 		return pnCarrito;
 	}
@@ -112,20 +120,11 @@ public class VentanaProductosYCarrito extends JFrame {
 		}
 		return pnDescripcion;
 	}
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getTxaCarrito());
+	private JScrollPane getScpCarrito() {
+		if (scpCarrito == null) {
+			scpCarrito = new JScrollPane();
 		}
-		return scrollPane;
-	}
-	private JTextArea getTxaCarrito() {
-		if (txaCarrito == null) {
-			txaCarrito = new JTextArea();
-			txaCarrito.setText("Carrito de compra");
-			txaCarrito.setEditable(false);
-		}
-		return txaCarrito;
+		return scpCarrito;
 	}
 	private JPanel getPnBotones() {
 		if (pnBotones == null) {
@@ -189,24 +188,85 @@ public class VentanaProductosYCarrito extends JFrame {
 		repaint();
 	}
 	
+	
+	private void cargarProductosEnCarrito() {
+		Container cont = new Container();
+
+		for (Product c : listaProductos) {
+			if(mapaProductos.get(c) > 0){
+				ProductoEnCarritoPanel aux = new ProductoEnCarritoPanel(c);
+				int cantidad = Integer.parseInt(aux.getSpCantidad().getValue().toString());
+				int precio = Integer.parseInt(aux.getLbPrecio().getText());
+				aux.getLbTotal().setText(cantidad*precio+"");
+				
+				aux.getSpCantidad().addChangeListener(new ChangeListener() {
+					
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						aux.getLbTotal().setText(Integer.parseInt(aux.getSpCantidad().
+								getValue().toString())*Integer.parseInt(
+										aux.getLbPrecio().toString())+"");
+					}
+				});
+				cont.add(aux);
+			}
+		}
+
+		cont.setLayout(new GridLayout(mapaProductos.size(), 1));
+
+		revalidate();
+		repaint();
+
+		getScpCarrito().getViewport().setView(cont);
+		revalidate();
+		repaint();
+	}
+	
 	private void añadirAlistaProductos(Product p){
 		mapaProductos.put(p,mapaProductos.get(p)+1);
-		actualizarCarrito();
+		cargarProductosEnCarrito();
 	}
 	
 	private void borrarDelistaProductos(Product p){
 		mapaProductos.put(p,mapaProductos.get(p)-1);
-		actualizarCarrito();
+		cargarProductosEnCarrito();
 	}
 	
-	private void actualizarCarrito(){
-		StringBuilder sb = new StringBuilder();
-		sb.append("Carrito de compra:\n)");
-		for(Product p : listaProductos){
-			if(mapaProductos.get(p) > 0){
-				sb.append(p.getDescripcion() + " Unids: " + mapaProductos.get(p) + "\n");
-			}
+	private JPanel getPnCarritoDescripcion() {
+		if (pnCarritoDescripcion == null) {
+			pnCarritoDescripcion = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) pnCarritoDescripcion.getLayout();
+			flowLayout.setHgap(75);
+			flowLayout.setAlignment(FlowLayout.LEFT);
+			pnCarritoDescripcion.add(getLbIndiceProducto());
+			pnCarritoDescripcion.add(getLbIndicePrecio());
+			pnCarritoDescripcion.add(getLbIndiceCantidad());
+			pnCarritoDescripcion.add(getLbIndiceTotal());
 		}
-		getTxaCarrito().setText(sb.toString());
+		return pnCarritoDescripcion;
+	}
+	private JLabel getLbIndiceProducto() {
+		if (lbIndiceProducto == null) {
+			lbIndiceProducto = new JLabel("Producto");
+		}
+		return lbIndiceProducto;
+	}
+	private JLabel getLbIndicePrecio() {
+		if (lbIndicePrecio == null) {
+			lbIndicePrecio = new JLabel("Precio");
+		}
+		return lbIndicePrecio;
+	}
+	private JLabel getLbIndiceCantidad() {
+		if (lbIndiceCantidad == null) {
+			lbIndiceCantidad = new JLabel("Cantidad");
+		}
+		return lbIndiceCantidad;
+	}
+	private JLabel getLbIndiceTotal() {
+		if (lbIndiceTotal == null) {
+			lbIndiceTotal = new JLabel("Total");
+		}
+		return lbIndiceTotal;
 	}
 }
