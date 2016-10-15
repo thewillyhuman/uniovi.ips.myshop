@@ -32,7 +32,7 @@ public class GetOrders extends Connector {
 	 */
 	public Order getOrder(String orderID) throws SQLException {
 		ResultSet rs = super.db.executeSQL(Properties.getString("sql.getOrderByID"), orderID);
-		return new Order(rs.getString(1), new GetCustomers().getCustomer(rs.getString(4)), rs.getDate(2));
+		return new Order(rs.getString(1), new GetCustomers(db).getCustomer(rs.getString(4)), rs.getDate(2));
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class GetOrders extends Connector {
 		List<Order> aux = new ArrayList<Order>();
 		ResultSet rs = super.db.executeSQL("sql.getAllOrders");
 		while(rs.next()) {
-			Order order = new Order(rs.getString(1), new GetCustomers().getCustomer(rs.getString(4)), rs.getDate(2));
+			Order order = new Order(rs.getString(1), new GetCustomers(db).getCustomer(rs.getString(4)), rs.getDate(2));
 			//order.addProduct(new , quantity);
 			aux.add(order);
 		}

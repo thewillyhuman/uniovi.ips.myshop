@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import es.uniovi.ips.myshop.database.Connector;
+import es.uniovi.ips.myshop.database.client.Database;
 import es.uniovi.ips.myshop.database.client.DatabaseConnection;
 import es.uniovi.ips.myshop.model.people.Address;
 import es.uniovi.ips.myshop.model.people.Customer;
@@ -18,10 +19,15 @@ import es.uniovi.ips.myshop.properties.Properties;
  * @since 8 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class GetCustomers extends Connector {
+public class GetCustomers {
 
 	private String customerID;
 	private Customer customer;
+	private Database db;
+	
+	public GetCustomers(Database db) {
+		this.db = db;
+	}
 
 	/**
 	 * Returns the matching customer with the customer ID provided.
@@ -32,20 +38,43 @@ public class GetCustomers extends Connector {
 	 *         otherwise.
 	 * @throws SQLException 
 	 */
-	public Customer getCustomer(String customerID) throws SQLException {
+	public Customer getCustomer(String customerID) {
 		this.customerID = customerID;
-		db.connect();
+		try {
+			db.connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		query();
 		db.closeConnection();
 		return customer;
 	}
 
-	@Override
-	protected void query() throws SQLException {
-		ResultSet rs = super.db.executeSQL(Properties.getString("sql.getCustomerByID"), customerID);
-		ResultSet rs2 = super.db.executeSQL(Properties.getString("sql.getAddressByCustomerID"), customerID);
-		customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-				new Address(rs2.getString(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
+	protected void query()  {
+		ResultSet rs = null;
+		try {
+			rs = db.executeSQL(Properties.getString("myshop.sql.getCustomerByID"), customerID);
+		} catch (SQLException e) {
+			System.out.println(e.getSQLState());
+			e.printStackTrace();
+		}
+		ResultSet rs2 = null;
+		try {
+			rs2 = db.executeSQL(Properties.getString("myshop.sql.getAddressByCustomerID"), customerID);
+		} catch (SQLException e) {
+			System.out.println(e.getSQLState());
+			e.printStackTrace();
+		}
+		try {
+			rs.next();
+			rs2.next();
+			customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+					new Address(rs2.getString(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

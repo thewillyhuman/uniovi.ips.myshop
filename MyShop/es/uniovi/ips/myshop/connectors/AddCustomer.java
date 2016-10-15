@@ -1,8 +1,10 @@
 package es.uniovi.ips.myshop.connectors;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import es.uniovi.ips.myshop.database.Connector;
+import es.uniovi.ips.myshop.database.client.Database;
 import es.uniovi.ips.myshop.model.people.Customer;
 import es.uniovi.ips.myshop.properties.Properties;
 
@@ -15,9 +17,10 @@ import es.uniovi.ips.myshop.properties.Properties;
  * @since 8 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class AddCustomer extends Connector {
+public class AddCustomer {
 
 	private Customer customer;
+	private Database db;
 
 	/**
 	 * Adds a single customer constructor. For a given customer object will add
@@ -29,18 +32,56 @@ public class AddCustomer extends Connector {
 	 *             if there is any error while connecting to the database or
 	 *             executing the query.
 	 */
-	public AddCustomer(Customer customer) throws SQLException {
+	public AddCustomer(Database db, Customer customer) throws SQLException {
 		this.customer = customer;
-		super.run();
+		this.db = db;
+		this.query();
 	}
 
-	@Override
-	protected void query() throws SQLException {
-		super.db.executeUpdate(Properties.getString("sql.addClient"), customer.getName(), customer.getSurname(),
-				customer.getDni());
-		String id = db.executeSQL("sql.getCustomerIDByDNI", customer.getDni()).getString(1);
-		super.db.executeUpdate(Properties.getString("sql.addClientAddress"), id, customer.getAddress().getStreet(),
-				customer.getAddress().getCity(), customer.getAddress().getState(), customer.getAddress().getZipCode());
+	protected void query() {
+		/*
+		 * System.out.println("Update start");
+		 * db.executeUpdate(Properties.getString("myshop.sql.insertClient"),
+		 * customer.getName(), customer.getSurname(), customer.getDni());
+		 * System.out.println("Update end"); System.out.println("Load resultSet"
+		 * ); ResultSet rs2 =
+		 * db.executeSQL(Properties.getString("myshop.sql.lastInsertID"));
+		 * rs2.next(); System.out.println("RS Loaded"); String clientID =
+		 * rs2.getString(1); System.out.println("SecondQuery start");
+		 * db.executeUpdate(Properties.getString("myshop.sql.insertAddress"),
+		 * clientID, customer.getAddress().getStreet(),
+		 * customer.getAddress().getCity(), customer.getAddress().getState(),
+		 * customer.getAddress().getZipCode()); System.out.println(
+		 * "SecondQuery end");
+		 */
+		try {
+			db.connect();
+		} catch (SQLException e1) {
+			System.err.println("Error while connecting");
+			e1.printStackTrace();
+		}
+		try {
+			db.executeUpdate(Properties.getString("myshop.sql.insertClient"), customer.getName(), customer.getSurname(),
+					customer.getDni());
+		} catch (SQLException e) {
+			System.out.println(e.getSQLState());
+			e.printStackTrace();
+		}
+		try {
+			ResultSet rs2 = db.executeSQL(Properties.getString("myshop.sql.lastInsertedID"));
+			rs2.next();
+			System.out.println(rs2.getString(1));
+			db.executeUpdate(Properties.getString("myshop.sql.insertAddress"), rs2.getString(1),
+					customer.getAddress().getStreet(), customer.getAddress().getCity(),
+					customer.getAddress().getState(), customer.getAddress().getZipCode());
+
+		} catch (SQLException e) {
+			System.out.println(e.getSQLState());
+			e.printStackTrace();
+		}
+
+		db.closeConnection();
+		System.out.println("Added");
 	}
 
 }

@@ -20,6 +20,12 @@ public class Customer extends Person{
 		setAddress(address);
 	}
 	
+	public Customer(String name, String surname, String dni, Address address) {
+		super(name, surname);
+		setDni(dni);
+		setAddress(address);
+	}
+	
 	public Customer(String id, String name, String surname, String dni, String street, String city, String state, String zipCode) {
 		super(id, name, surname);
 		setDni(dni);

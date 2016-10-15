@@ -44,6 +44,17 @@ public class Order {
 		status = Status.PENDIENTE;
 	}
 	
+	/**
+	 * Creates an empty order where we will be able to add and delete products.
+	 * 
+	 * @param customer who own the order.
+	 */
+	public Order(Customer customer) {
+		setCliente(customer);
+		products = new ArrayList<OrderDetail>();
+		status = Status.PENDIENTE;
+	}
+	
 	public Order(String orderID, Customer customer, Date date, Status status) {
 		setIdPedido(orderID);
 		setCliente(customer);
