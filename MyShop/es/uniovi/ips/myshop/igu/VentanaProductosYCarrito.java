@@ -5,7 +5,7 @@ import java.awt.Container;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 
-import model.Producto;
+import es.uniovi.ips.myshop.model.product.Product;
 
 import java.awt.EventQueue;
 
@@ -20,7 +20,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 
@@ -30,8 +32,8 @@ public class VentanaProductosYCarrito extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel pnCarrito;
-	private JPanel pnProductos;
-	private JScrollPane scpProductos;
+	private JPanel pnProducts;
+	private JScrollPane scpProducts;
 	private JPanel pnDescripcion;
 	private JScrollPane scrollPane;
 	private JTextArea txaCarrito;
@@ -40,7 +42,8 @@ public class VentanaProductosYCarrito extends JFrame {
 	private JButton btBorrar;
 	private JButton btAceptar;
 	
-	private List<Producto> listaProductos = new ArrayList<Producto>();
+	private Map<Product,Integer> mapaProductos = new HashMap<Product,Integer>();
+	private List<Product> listaProductos = new ArrayList<Product>();
 
 	/**
 	 * Launch the application.
@@ -65,7 +68,7 @@ public class VentanaProductosYCarrito extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaProductosYCarrito() {
-		setTitle("Ventana de productos");
+		setTitle("Ventana de Products");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 615, 300);
 		contentPane = new JPanel();
@@ -73,9 +76,10 @@ public class VentanaProductosYCarrito extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getPnCarrito(), BorderLayout.CENTER);
-		contentPane.add(getPnProductos(), BorderLayout.WEST);
+		contentPane.add(getPnProducts(), BorderLayout.WEST);
 		contentPane.add(getPnDescripcion(), BorderLayout.SOUTH);
-		cargarProductosEnLista();
+		actualizarCarrito();
+		cargarProductsEnLista();
 	}
 
 	private JPanel getPnCarrito() {
@@ -86,19 +90,19 @@ public class VentanaProductosYCarrito extends JFrame {
 		}
 		return pnCarrito;
 	}
-	private JPanel getPnProductos() {
-		if (pnProductos == null) {
-			pnProductos = new JPanel();
-			pnProductos.setLayout(new BorderLayout(0, 0));
-			pnProductos.add(getScpProductos(), BorderLayout.WEST);
+	private JPanel getPnProducts() {
+		if (pnProducts == null) {
+			pnProducts = new JPanel();
+			pnProducts.setLayout(new BorderLayout(0, 0));
+			pnProducts.add(getScpProducts(), BorderLayout.WEST);
 		}
-		return pnProductos;
+		return pnProducts;
 	}
-	private JScrollPane getScpProductos() {
-		if (scpProductos == null) {
-			scpProductos = new JScrollPane();
+	private JScrollPane getScpProducts() {
+		if (scpProducts == null) {
+			scpProducts = new JScrollPane();
 		}
-		return scpProductos;
+		return scpProducts;
 	}
 	private JPanel getPnDescripcion() {
 		if (pnDescripcion == null) {
@@ -152,25 +156,23 @@ public class VentanaProductosYCarrito extends JFrame {
 		return btAceptar;
 	}
 	
-	private void cargarProductosEnLista() {
+	private void cargarProductsEnLista() {
 		Container cont = new Container();
 
-		for (Producto c : listaProductos) {
+		for (Product c : listaProductos) {
 			ProductoListaPanel aux = new ProductoListaPanel(c);
 			aux.getBtAñadir().addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// Loading the second pane.
-					añadirAListaProductos(c);
+					añadirAlistaProductos(c);
 				}
 			});
 			aux.getBtBorrar().addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// Loading the second pane.
-					borrarDeListaProductos(c);
+					borrarDelistaProductos(c);
 				}
 			});
 
@@ -182,16 +184,29 @@ public class VentanaProductosYCarrito extends JFrame {
 		revalidate();
 		repaint();
 
-		getScpProductos().getViewport().setView(cont);
+		getScpProducts().getViewport().setView(cont);
 		revalidate();
 		repaint();
 	}
 	
-	private void añadirAListaProductos(Producto producto){
-		//TODO
+	private void añadirAlistaProductos(Product p){
+		mapaProductos.put(p,mapaProductos.get(p)+1);
+		actualizarCarrito();
 	}
 	
-	private void borrarDeListaProductos(Producto producto){
-		//TODO
+	private void borrarDelistaProductos(Product p){
+		mapaProductos.put(p,mapaProductos.get(p)-1);
+		actualizarCarrito();
+	}
+	
+	private void actualizarCarrito(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("Carrito de compra:\n)");
+		for(Product p : listaProductos){
+			if(mapaProductos.get(p) > 0){
+				sb.append(p.getDescripcion() + " Unids: " + mapaProductos.get(p) + "\n");
+			}
+		}
+		getTxaCarrito().setText(sb.toString());
 	}
 }
