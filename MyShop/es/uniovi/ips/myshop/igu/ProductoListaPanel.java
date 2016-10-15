@@ -4,10 +4,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import es.uniovi.ips.myshop.model.product.Product;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
 
 public class ProductoListaPanel extends JPanel{
@@ -21,10 +17,8 @@ public class ProductoListaPanel extends JPanel{
 	private JTextField txNombreProducto;
 	private JButton btBorrar;
 	private JButton btAñadir;
-	private Product producto;
 
-	public ProductoListaPanel(Product producto){
-		this.producto = producto;
+	public ProductoListaPanel(){
 		setLayout(null);
 		add(getLblFotoProducto());
 		add(getLblPrecio());

@@ -5,6 +5,7 @@ import java.awt.Container;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 
+import es.uniovi.ips.myshop.model.product.Inventory;
 import es.uniovi.ips.myshop.model.product.Product;
 
 import java.awt.EventQueue;
@@ -17,7 +18,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
-import javax.swing.JTextArea;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -85,6 +85,7 @@ public class VentanaProductosYCarrito extends JFrame {
 		contentPane.add(getPnCarrito(), BorderLayout.CENTER);
 		contentPane.add(getPnProducts(), BorderLayout.WEST);
 		contentPane.add(getPnDescripcion(), BorderLayout.SOUTH);
+		inicializarListaYMap();
 		cargarProductsEnLista();
 		cargarProductosEnCarrito();
 	}
@@ -157,9 +158,8 @@ public class VentanaProductosYCarrito extends JFrame {
 	
 	private void cargarProductsEnLista() {
 		Container cont = new Container();
-
 		for (Product c : listaProductos) {
-			ProductoListaPanel aux = new ProductoListaPanel(c);
+			ProductoListaPanel aux = new ProductoListaPanel();
 			aux.getBtAñadir().addActionListener(new ActionListener() {
 
 				@Override
@@ -191,7 +191,7 @@ public class VentanaProductosYCarrito extends JFrame {
 	
 	private void cargarProductosEnCarrito() {
 		Container cont = new Container();
-
+		
 		for (Product c : listaProductos) {
 			if(mapaProductos.get(c) > 0){
 				ProductoEnCarritoPanel aux = new ProductoEnCarritoPanel(c);
@@ -268,5 +268,12 @@ public class VentanaProductosYCarrito extends JFrame {
 			lbIndiceTotal = new JLabel("Total");
 		}
 		return lbIndiceTotal;
+	}
+	
+	private void inicializarListaYMap(){
+		listaProductos = new Inventory().getAllProducts();
+		for(Product p : listaProductos){
+			mapaProductos.put(p, 0);
+		}
 	}
 }
