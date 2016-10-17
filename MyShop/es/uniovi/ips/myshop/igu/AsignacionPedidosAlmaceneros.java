@@ -13,7 +13,6 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.people.Person;
-import es.uniovi.ips.myshop.model.product.Product;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
