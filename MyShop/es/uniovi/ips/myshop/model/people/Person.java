@@ -19,6 +19,11 @@ public abstract class Person {
 		this.setSurname(surname);
 	}
 	
+	public Person(String name, String surname) {
+		this.setName(name);
+		this.setSurname(surname);
+	}
+	
 	/**
 	 * Gets the name of the person.
 	 * 

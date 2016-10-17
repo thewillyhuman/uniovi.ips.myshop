@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import model.Producto;
+import es.uniovi.ips.myshop.model.product.Product;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -22,10 +22,10 @@ public class ProductoListaPanel extends JPanel{
 	private JTextArea txaDescripcionProducto;
 	private JTextField txNombreProducto;
 	private JButton btBorrar;
-	private JButton btAñadir;
-	private Producto producto;
+	private JButton btAÃ±adir;
+	private Product producto;
 
-	public ProductoListaPanel(Producto producto){
+	public ProductoListaPanel(Product producto){
 		this.producto = producto;
 		setLayout(null);
 		add(getLblFotoProducto());
@@ -36,7 +36,7 @@ public class ProductoListaPanel extends JPanel{
 		add(getScpDescripcionProducto());
 		add(getTxNombreProducto());
 		add(getBtBorrar());
-		add(getBtAñadir());
+		add(getBtAÃ±adir());
 	}
 	private JLabel getLblFotoProducto() {
 		if (lblFotoProducto == null) {
@@ -107,11 +107,11 @@ public class ProductoListaPanel extends JPanel{
 		}
 		return btBorrar;
 	}
-	JButton getBtAñadir() {
-		if (btAñadir == null) {
-			btAñadir = new JButton("A\u00F1adir");
-			btAñadir.setBounds(239, 213, 89, 23);
+	JButton getBtAÃ±adir() {
+		if (btAÃ±adir == null) {
+			btAÃ±adir = new JButton("A\u00F1adir");
+			btAÃ±adir.setBounds(239, 213, 89, 23);
 		}
-		return btAñadir;
+		return btAÃ±adir;
 	}
 }

@@ -62,7 +62,7 @@ public class WorkingPlan {
 			if(!dp.collected)
 				return false;
 			if(!dp.incidence.solved) {
-				order.setStatus(Status.INCIDENCIA);
+				order.setStatus(Status.LISTO);
 				return false;
 			}
 		}

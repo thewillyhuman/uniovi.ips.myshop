@@ -31,8 +31,9 @@ public class Inventory {
 	 * Gives a list with all the products in the database.
 	 * 
 	 * @return a list containning all the products in the database.
+	 * @throws SQLException 
 	 */
-	public List<Product> getAllProducts() {
+	public List<Product> getAllProducts() throws SQLException {
 		return new GetProducts().getAllProducts();
 	}
 	
@@ -41,9 +42,10 @@ public class Inventory {
 	 * 
 	 * @param productID to look for in the database.
 	 * @return the product if founded in the database. Null otherwise.
+	 * @throws SQLException 
 	 */
-	public Product getProduct(String productID) {
-		return new GetProducts().getProduct(productID);
+	public Product getProduct(String productID) throws SQLException {
+		return  new GetProducts().getProduct(productID);
 	}
 
 }

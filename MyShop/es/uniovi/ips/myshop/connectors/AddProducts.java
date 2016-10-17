@@ -2,7 +2,7 @@ package es.uniovi.ips.myshop.connectors;
 
 import java.sql.SQLException;
 
-import es.uniovi.ips.myshop.database.Connector;
+import es.uniovi.ips.myshop.database.InBoardConnector;
 import es.uniovi.ips.myshop.model.product.Product;
 
 /**
@@ -14,8 +14,9 @@ import es.uniovi.ips.myshop.model.product.Product;
  * @since 8 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class AddProducts extends Connector {
+public class AddProducts extends InBoardConnector {
 
+	@SuppressWarnings("unused")
 	private Product product;
 	
 	/**
@@ -26,13 +27,12 @@ public class AddProducts extends Connector {
 	 *             executing the query.
 	 */
 	public AddProducts(Product product) throws SQLException {
-		super.run();
 		this.product = product;
 	}
 
 	@Override
 	protected void query() {
-		super.sql = product.toString();
+		// Not implemented yet.
 	}
 
 }
