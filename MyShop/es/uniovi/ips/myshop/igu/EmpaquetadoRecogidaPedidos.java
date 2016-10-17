@@ -22,6 +22,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,7 +212,12 @@ public class EmpaquetadoRecogidaPedidos extends JFrame {
 	
 	private void cargarProductos() {
 		Container cont = new Container();
-		listaPedidos = new GetOrders().getAllOrders();
+		try {
+			listaPedidos = new GetOrders().getAllOrders();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		for (Order c : listaPedidos) {
 			for(OrderDetail p : c.getProductos()){
 				InformacionProductoPedidoPanel aux = new InformacionProductoPedidoPanel();

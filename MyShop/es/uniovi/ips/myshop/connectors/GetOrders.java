@@ -65,7 +65,7 @@ public class GetOrders extends Connector implements OutBoardConnector{
 	 * @return a list with all the orders in the database.
 	 * @throws SQLException 
 	 */
-	protected List<Order> getAllOrders() throws SQLException {
+	public List<Order> getAllOrders() throws SQLException {
 		new ConnectDatabase(super.getDatabase());
 		List<Order> aux = new ArrayList<Order>();
 		ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.allOrders"));
