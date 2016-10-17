@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 public class Properties {
 	
-	private static final String BUNDLE_NAME = "es.uniovi.ips.myshop.properties.MyShop.properties";
+	private static final String BUNDLE_NAME = "es.uniovi.ips.myshop.properties.MyShop";
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
 	private Properties() {}

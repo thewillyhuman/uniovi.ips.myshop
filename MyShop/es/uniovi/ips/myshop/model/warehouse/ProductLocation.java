@@ -1,7 +1,5 @@
 package es.uniovi.ips.myshop.model.warehouse;
 
-import es.uniovi.ips.myshop.model.product.Product;
-
 /**
  * 
  * ProductLocation.java
@@ -13,7 +11,6 @@ import es.uniovi.ips.myshop.model.product.Product;
  */
 public class ProductLocation {
 
-	private Product prod;
 	private int pasillo, posicion, altura;
 	private Lado lado;
 	
@@ -21,20 +18,12 @@ public class ProductLocation {
 		DERECHA, IZQUIERDA
 	}
 	
-	public ProductLocation(Product prod, int pasillo, int posicion, int altura, Lado lado) {
+	public ProductLocation(int pasillo, int posicion, int altura, Lado lado) {
 		super();
-		this.prod = prod;
 		this.pasillo = pasillo;
 		this.posicion = posicion;
 		this.altura = altura;
 		this.lado = lado;
-	}
-
-	/**
-	 * @return the prod
-	 */
-	public Product getProd() {
-		return prod;
 	}
 
 	/**
