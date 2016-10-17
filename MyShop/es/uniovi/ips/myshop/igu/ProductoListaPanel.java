@@ -91,4 +91,5 @@ public class ProductoListaPanel extends JPanel{
 		}
 		return btAñadir;
 	}
+
 }

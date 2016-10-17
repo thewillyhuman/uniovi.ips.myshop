@@ -21,7 +21,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -160,7 +159,7 @@ public class VentanaProductosYCarrito extends JFrame {
 	private void cargarProductsEnLista() {
 		Container cont = new Container();
 		for (Product c : listaProductos) {
-			ProductoListaPanel aux = new ProductoListaPanel(c);
+			ProductoListaPanel aux = new ProductoListaPanel();
 			aux.getBtAñadir().addActionListener(new ActionListener() {
 
 				@Override
@@ -272,12 +271,7 @@ public class VentanaProductosYCarrito extends JFrame {
 	}
 	
 	private void inicializarListaYMap(){
-		try {
-			listaProductos = new Inventory().getAllProducts();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		listaProductos = new Inventory().getAllProducts();
 		for(Product p : listaProductos){
 			mapaProductos.put(p, 0);
 		}
