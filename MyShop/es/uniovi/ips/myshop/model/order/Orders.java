@@ -5,7 +5,6 @@ import java.util.List;
 
 import es.uniovi.ips.myshop.connectors.AddOrder;
 import es.uniovi.ips.myshop.connectors.GetOrders;
-import es.uniovi.ips.myshop.controller.Controller;
 import es.uniovi.ips.myshop.model.order.Order.Status;
 
 /**
@@ -26,7 +25,7 @@ public class Orders {
 	 * @throws SQLException if there's any error while writing in the database.
 	 */
 	public static void addOrder(Order order) throws SQLException {
-		new AddOrder(Controller.getDatabase(), order);
+		new AddOrder(order);
 	}
 	
 	/**

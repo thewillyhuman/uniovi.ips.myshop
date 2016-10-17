@@ -34,7 +34,7 @@ public class Inventory {
 	 * @throws SQLException 
 	 */
 	public List<Product> getAllProducts() throws SQLException {
-		return null;// new GetProducts().getAllProducts();
+		return new GetProducts().getAllProducts();
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class Inventory {
 	 * @throws SQLException 
 	 */
 	public Product getProduct(String productID) throws SQLException {
-		return null; // new GetProducts().getProduct(productID);
+		return  new GetProducts().getProduct(productID);
 	}
 
 }

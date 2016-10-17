@@ -1,10 +1,8 @@
 package es.uniovi.ips.myshop.controller;
 
-import java.sql.SQLException;
-
 import es.uniovi.ips.myshop.database.client.Database;
-import es.uniovi.ips.myshop.database.client.DatabaseConnection;
 import es.uniovi.ips.myshop.database.client.MySQLDatabase;
+import es.uniovi.ips.myshop.properties.Properties;
 
 /**
  * 
@@ -17,17 +15,13 @@ import es.uniovi.ips.myshop.database.client.MySQLDatabase;
  */
 public class Controller {
 	
-	private static Database db = null;//new MySQLDatabase();
+	private static Database db = new MySQLDatabase(Database.PROTOCOL_JDBC, MySQLDatabase.MYSQL_VENDOR,
+			Properties.getString("myshop.server"), Properties.getString("myshop.port"),
+			Properties.getString("myshop.database.name"), Properties.getString("myshop.user"),
+			Properties.getString("myshop.password"));
 	
 	public static Database getDatabase() {
 		return db;
 	}
-	
-	public static void openConnection() throws SQLException {
-		new DatabaseConnection(db);
-	}
-	
-	public static void closeConnection() throws SQLException {
-		db.closeConnection();
-	}
+
 }

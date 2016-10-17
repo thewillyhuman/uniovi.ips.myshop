@@ -36,10 +36,12 @@ public abstract class Database {
 	 */
 	public void closeConnection() {
 		try {
-			this.conn.commit();
-			this.conn.close();
+			if(!this.conn.isClosed() || this.conn != null) {
+				this.conn.commit();
+				this.conn.close();
 			System.out.println("--> Connection " + this.conn.toString()
 					+ " has been closed succesfully.");
+			}
 		} catch (SQLException e) {
 			System.err.println("The connection couldn't be closed.");
 			e.printStackTrace();
@@ -88,6 +90,8 @@ public abstract class Database {
 	 */
 	public ResultSet executeSQL(String sql, Object... parameters)
 			throws SQLException {
+		if(this.conn.isClosed())
+			this.connect();
 		this.psQuery = this.conn.prepareStatement(sql);
 		for (int i = 0; i < parameters.length; i++) {
 			this.psQuery.setObject(i + 1, parameters[i]);

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import es.uniovi.ips.myshop.database.Connector;
+import es.uniovi.ips.myshop.database.OutBoardConnector;
+import es.uniovi.ips.myshop.database.client.ConnectDatabase;
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.properties.Properties;
@@ -20,8 +22,8 @@ import es.uniovi.ips.myshop.properties.Properties;
  * @since 8 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class GetOrders extends Connector {
-
+public class GetOrders extends Connector implements OutBoardConnector{
+	
 	/**
 	 * Gets an order by its ID.
 	 * 
@@ -31,8 +33,16 @@ public class GetOrders extends Connector {
 	 * @throws SQLException
 	 */
 	public Order getOrder(String orderID) throws SQLException {
-		ResultSet rs = super.db.executeSQL(Properties.getString("sql.getOrderByID"), orderID);
-		return new Order(rs.getString(1), new GetCustomers(db).getCustomer(rs.getString(4)), rs.getDate(2));
+		new ConnectDatabase(super.getDatabase());
+		ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getOrderByID"), orderID);
+		rs.next();
+		Order aux = new Order(rs.getString(1), new GetCustomers().getCustomer(rs.getString(4)), rs.getDate(2));
+		ResultSet rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getRPPRelation"), aux.getIdPedido());
+		while(rs2.next()) {
+			aux.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3));
+		}
+		//db.closeConnection();
+		return aux;
 	}
 
 	/**
@@ -56,19 +66,20 @@ public class GetOrders extends Connector {
 	 * @throws SQLException 
 	 */
 	protected List<Order> getAllOrders() throws SQLException {
+		new ConnectDatabase(super.getDatabase());
 		List<Order> aux = new ArrayList<Order>();
-		ResultSet rs = super.db.executeSQL("sql.getAllOrders");
+		ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.allOrders"));
 		while(rs.next()) {
-			Order order = new Order(rs.getString(1), new GetCustomers(db).getCustomer(rs.getString(4)), rs.getDate(2));
+			Order order = new Order(rs.getString(1), new GetCustomers().getCustomer(rs.getString(4)), rs.getDate(2));
+			order.setStatus(Status.getValueOf(rs.getString(3)));
+			ResultSet rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getRPPRelation"), order.getIdPedido());
+			while(rs2.next()) {
+				order.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3));
+			}
 			//order.addProduct(new , quantity);
 			aux.add(order);
 		}
+		//db.closeConnection();
 		return aux;
-	}
-
-	@Override
-	protected void query() {
-		// TODO Auto-generated method stub
-
 	}
 }

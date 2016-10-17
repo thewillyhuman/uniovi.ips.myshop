@@ -26,7 +26,18 @@ public class Order {
 	private Status status;
 
 	public enum Status {
-		PENDIENTE, SOLICITADO, LISTO, EMPAQUETANDO
+		PENDIENTE, SOLICITADO, LISTO, EMPAQUETANDO;
+
+		public static Status getValueOf(String string) {
+			if(string.equals("PENDIENTE"))
+				return PENDIENTE;
+			else if(string.equals("SOLICITADO"))
+				return SOLICITADO;
+			else if(string.equals("LISTO"))
+				return LISTO;
+			else 
+				return EMPAQUETANDO;
+		}
 	}
 
 	/**
@@ -48,9 +59,11 @@ public class Order {
 	 * Creates an empty order where we will be able to add and delete products.
 	 * 
 	 * @param customer who own the order.
+	 * @param date where the order take place.
 	 */
-	public Order(Customer customer) {
+	public Order(Customer customer, Date date) {
 		setCliente(customer);
+		setDate(date);
 		products = new ArrayList<OrderDetail>();
 		status = Status.PENDIENTE;
 	}

@@ -2,18 +2,21 @@ package es.uniovi.ips.myshop.test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.junit.Test;
-
-import com.sun.security.ntlm.Client;
 
 import es.uniovi.ips.myshop.connectors.AddCustomer;
 import es.uniovi.ips.myshop.connectors.AddOrder;
 import es.uniovi.ips.myshop.connectors.GetCustomers;
+import es.uniovi.ips.myshop.connectors.GetOrders;
 import es.uniovi.ips.myshop.connectors.GetProducts;
+import es.uniovi.ips.myshop.connectors.ModifyOrder;
 import es.uniovi.ips.myshop.database.client.Database;
 import es.uniovi.ips.myshop.database.client.MySQLDatabase;
 import es.uniovi.ips.myshop.model.order.Order;
+import es.uniovi.ips.myshop.model.order.Order.Status;
+import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.people.Address;
 import es.uniovi.ips.myshop.model.people.Customer;
 import es.uniovi.ips.myshop.model.product.Product;
@@ -33,22 +36,14 @@ public class SimpleTest {
 	
 	@Test
 	public void getAllProductsTest() throws SQLException {
-		Database bd = new MySQLDatabase(Database.PROTOCOL_JDBC, MySQLDatabase.MYSQL_VENDOR,
-				Properties.getString("myshop.server"), Properties.getString("myshop.port"),
-				Properties.getString("myshop.database.name"), Properties.getString("myshop.user"),
-				Properties.getString("myshop.password"));
-		for(Product p : new GetProducts(bd).getAllProducts()) {
+		for(Product p : new GetProducts().getAllProducts()) {
 			System.out.println(p.getIDProducto() + " " + p.getLocalizacion().getLado().toString());
 		}
 	} //Properties.getString("myshop.sql.getProductByID")
 	
 	@Test
 	public void getProductTest() throws SQLException {
-		Database bd = new MySQLDatabase(Database.PROTOCOL_JDBC, MySQLDatabase.MYSQL_VENDOR,
-				Properties.getString("myshop.server"), Properties.getString("myshop.port"),
-				Properties.getString("myshop.database.name"), Properties.getString("myshop.user"),
-				Properties.getString("myshop.password"));
-		System.out.println("Descripción: " + new GetProducts(bd).getProduct("1").getDescripcion());
+		System.out.println("Descripción: " + new GetProducts().getProduct("1").getDescripcion());
 	}
 	
 	@Test
@@ -70,12 +65,8 @@ public class SimpleTest {
 	
 	@Test
 	public void addClientTest() throws SQLException {
-		Database bd = new MySQLDatabase(Database.PROTOCOL_JDBC, MySQLDatabase.MYSQL_VENDOR,
-				Properties.getString("myshop.server"), Properties.getString("myshop.port"),
-				Properties.getString("myshop.database.name"), Properties.getString("myshop.user"),
-				Properties.getString("myshop.password"));
-		Customer pepe = new Customer("Pepe", "Borrar", "45170929X", new Address("Alcalá de Enares 5", "Oviedo", "Asturias", "33007"));
-		new AddCustomer(bd, pepe);
+		Customer pepe = new Customer("Pepe", "Borrar", "45170929XJ", new Address("Alcalá de Enares 5", "Oviedo", "Asturias", "33007"));
+		new AddCustomer(pepe);
 	}
 	
 	@Test
@@ -114,36 +105,67 @@ public class SimpleTest {
 	
 	@Test
 	public void AddOrderTest() {
-		Database bd = new MySQLDatabase(Database.PROTOCOL_JDBC, MySQLDatabase.MYSQL_VENDOR,
-				Properties.getString("myshop.server"), Properties.getString("myshop.port"),
-				Properties.getString("myshop.database.name"), Properties.getString("myshop.user"),
-				Properties.getString("myshop.password"));
-		Order order = new Order(new GetCustomers(bd).getCustomer("1"));
+		Order order = new Order(new GetCustomers().getCustomer("1"), new Date());
+		order.setStatus(Status.SOLICITADO);
 		try {
-			order.addProduct(new GetProducts(bd).getProduct("1"), 10);
+			order.addProduct(new GetProducts().getProduct("1"), 100);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
-			order.addProduct(new GetProducts(bd).getProduct("2"), 20);
-			System.out.println(new GetProducts(bd).getProduct("2").getDescripcion());
+			order.addProduct(new GetProducts().getProduct("2"), 400);
+			System.out.println(new GetProducts().getProduct("2").getDescripcion());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(order.getCliente().getName());
-		new AddOrder(bd, order);
+		new AddOrder(order);
 	}
 	
 	@Test
 	public void getCustomerTest() {
-		Database bd = new MySQLDatabase(Database.PROTOCOL_JDBC, MySQLDatabase.MYSQL_VENDOR,
-				Properties.getString("myshop.server"), Properties.getString("myshop.port"),
-				Properties.getString("myshop.database.name"), Properties.getString("myshop.user"),
-				Properties.getString("myshop.password"));
-		Customer p = new GetCustomers(bd).getCustomer("1");
+		Customer p = new GetCustomers().getCustomer("2");
 		System.out.println(p.getName());
+	}
+	
+	@Test
+	public void getOrderTest() {
+		Order order = null;
+		try {
+			order = new GetOrders().getOrder("22");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("Order id: " + order.getIdPedido() + " Customer: " + order.getCliente().getDni() + " Total: " + order.getTotalPrice());
+		for(OrderDetail od : order.getProductos()) {
+			System.out.println(od.getProducto().getIDProducto() +"\t"+od.getCantidad()+"\t"+od.getProducto().getPrecio() + "\t" + od.getCantidad()*od.getProducto().getPrecio());
+		}
+	}
+	
+	@Test
+	public void changeOrderStatusTest() {
+		try {
+			new ModifyOrder(new GetOrders().getOrder("23"), Status.LISTO);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void getAllOrdersTest() {
+		try {
+			for(Order o : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
+				System.out.println(o.getIdPedido() + " " +String.valueOf(o.getEstado()));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

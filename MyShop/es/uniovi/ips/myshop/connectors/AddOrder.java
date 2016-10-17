@@ -4,11 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-import es.uniovi.ips.myshop.database.Connector;
-import es.uniovi.ips.myshop.database.client.Database;
+import es.uniovi.ips.myshop.database.InBoardConnector;
+import es.uniovi.ips.myshop.database.client.ConnectDatabase;
+import es.uniovi.ips.myshop.database.client.DisconnectDatabase;
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
-import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.properties.Properties;
 
 /**
@@ -20,10 +20,9 @@ import es.uniovi.ips.myshop.properties.Properties;
  * @since 8 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class AddOrder {
+public class AddOrder extends InBoardConnector {
 	
 	private Order order;
-	private Database bd;
 	
 	/**
 	 * Will add the given order on to the database.
@@ -32,37 +31,30 @@ public class AddOrder {
 	 * @throws SQLException if there is any error while connecting to the
 	 *             database or executing the query.
 	 */
-	public AddOrder(Database db, Order order) {
+	public AddOrder(Order order) {
 		this.order = order;
-		this.bd = db;
 		query();
 	}
 
+	@Override
 	protected void query() {
 		try {
-			bd.connect();
+			new ConnectDatabase(super.getDatabase());
 		} catch (SQLException e) {
 			System.out.println(e.getSQLState());
 			e.printStackTrace();
 		}
-		String status;
-		if(order.getEstado() == Status.PENDIENTE)
-			status = "PENDIENTE";
-		else if(order.getEstado() == Status.SOLICITADO)
-			status = "SOLICITADO";
-		else
-			status = "LISTO";
-			
-		String date = new SimpleDateFormat("yyyy-MM-dd").format(order.getDate());
+		String status = String.valueOf(order.getEstado());			
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getDate());
 		try {
-			bd.executeUpdate(Properties.getString("sql.addOrder"), date, status, order.getCliente().getId());
+			super.getDatabase().executeUpdate(Properties.getString("myshop.sql.addOrder"), date, status, order.getCliente().getId());
 		} catch (SQLException e) {
 			System.out.println(e.getSQLState());
 			e.printStackTrace();
 		}
 		ResultSet rs2 = null;
 		try {
-			rs2 = bd.executeSQL(Properties.getString("myshop.sql.lastInsertedID"));
+			rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.lastInsertedID"));
 		} catch (SQLException e) {
 			System.out.println(e.getSQLState());
 			e.printStackTrace();
@@ -75,22 +67,20 @@ public class AddOrder {
 		}
 		String orderID = "";
 		try {
-			orderID = rs2.getString(2);
+			orderID = rs2.getString(1);
 		} catch (SQLException e) {
 			System.out.println(e.getSQLState());
 			e.printStackTrace();
 		}
 		for(OrderDetail od : order.getProductos()) {
-			// myshop.sql.addRPPRelation
 			try {
-				bd.executeUpdate(Properties.getString("myshop.sql.addRPPRelation"), orderID, od.getProducto().getIDProducto(), od.getCantidad());
-				System.out.println("New P added");
+				super.getDatabase().executeUpdate(Properties.getString("myshop.sql.addRPPRelation"), orderID, od.getProducto().getIDProducto(), od.getCantidad());
 			} catch (SQLException e) {
 				System.out.println(e.getSQLState());
 				e.printStackTrace();
 			}
 		}
 		
-		bd.closeConnection();
+		new DisconnectDatabase(super.getDatabase());
 	}
 }
