@@ -3,6 +3,7 @@ package es.uniovi.ips.myshop.test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -11,6 +12,7 @@ import es.uniovi.ips.myshop.connectors.AddOrder;
 import es.uniovi.ips.myshop.connectors.GetCustomers;
 import es.uniovi.ips.myshop.connectors.GetOrders;
 import es.uniovi.ips.myshop.connectors.GetProducts;
+import es.uniovi.ips.myshop.connectors.GetWarehouseKeepers;
 import es.uniovi.ips.myshop.connectors.ModifyOrder;
 import es.uniovi.ips.myshop.database.client.Database;
 import es.uniovi.ips.myshop.database.client.MySQLDatabase;
@@ -19,6 +21,7 @@ import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.people.Address;
 import es.uniovi.ips.myshop.model.people.Customer;
+import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 import es.uniovi.ips.myshop.model.product.Product;
 import es.uniovi.ips.myshop.properties.Properties;
 
@@ -165,6 +168,14 @@ public class SimpleTest {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void getAllWarehouseKeepersTest() {
+		List<WharehouseKeeper> aux = new GetWarehouseKeepers().getAll();
+		for(WharehouseKeeper wk : aux) {
+			System.out.println(wk.getId() + " " + wk.getName());
 		}
 	}
 
