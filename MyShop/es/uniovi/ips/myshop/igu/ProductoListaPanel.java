@@ -4,10 +4,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import es.uniovi.ips.myshop.model.product.Product;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
 
 public class ProductoListaPanel extends JPanel{
@@ -18,22 +14,17 @@ public class ProductoListaPanel extends JPanel{
 	private JLabel lblExistencias;
 	private JTextField txPrecio;
 	private JTextField txExistencias;
-	private JScrollPane scpDescripcionProducto;
-	private JTextArea txaDescripcionProducto;
 	private JTextField txNombreProducto;
 	private JButton btBorrar;
 	private JButton btAñadir;
-	private Product producto;
 
-	public ProductoListaPanel(Product producto){
-		this.producto = producto;
+	public ProductoListaPanel(){
 		setLayout(null);
 		add(getLblFotoProducto());
 		add(getLblPrecio());
 		add(getLblExistencias());
 		add(getTxPrecio());
 		add(getTxExistencias());
-		add(getScpDescripcionProducto());
 		add(getTxNombreProducto());
 		add(getBtBorrar());
 		add(getBtAñadir());
@@ -41,7 +32,7 @@ public class ProductoListaPanel extends JPanel{
 	private JLabel getLblFotoProducto() {
 		if (lblFotoProducto == null) {
 			lblFotoProducto = new JLabel("Foto producto");
-			lblFotoProducto.setBounds(10, 0, 146, 125);
+			lblFotoProducto.setBounds(21, 39, 146, 125);
 		}
 		return lblFotoProducto;
 	}
@@ -77,20 +68,6 @@ public class ProductoListaPanel extends JPanel{
 		}
 		return txExistencias;
 	}
-	private JScrollPane getScpDescripcionProducto() {
-		if (scpDescripcionProducto == null) {
-			scpDescripcionProducto = new JScrollPane();
-			scpDescripcionProducto.setBounds(20, 136, 420, 66);
-			scpDescripcionProducto.setViewportView(getTxaDescripcionProducto());
-		}
-		return scpDescripcionProducto;
-	}
-	private JTextArea getTxaDescripcionProducto() {
-		if (txaDescripcionProducto == null) {
-			txaDescripcionProducto = new JTextArea();
-		}
-		return txaDescripcionProducto;
-	}
 	private JTextField getTxNombreProducto() {
 		if (txNombreProducto == null) {
 			txNombreProducto = new JTextField();
@@ -103,14 +80,14 @@ public class ProductoListaPanel extends JPanel{
 	JButton getBtBorrar() {
 		if (btBorrar == null) {
 			btBorrar = new JButton("Borrar");
-			btBorrar.setBounds(351, 213, 89, 23);
+			btBorrar.setBounds(311, 157, 89, 23);
 		}
 		return btBorrar;
 	}
 	JButton getBtAñadir() {
 		if (btAñadir == null) {
 			btAñadir = new JButton("A\u00F1adir");
-			btAñadir.setBounds(239, 213, 89, 23);
+			btAñadir.setBounds(199, 157, 89, 23);
 		}
 		return btAñadir;
 	}
