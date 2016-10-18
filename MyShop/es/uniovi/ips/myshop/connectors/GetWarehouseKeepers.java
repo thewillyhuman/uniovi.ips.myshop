@@ -23,7 +23,7 @@ public class GetWarehouseKeepers extends Connector implements OutBoardConnector 
 			e.printStackTrace();
 		}
 		try {
-			ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getAllWarehouseKeeper"));
+			ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myShop.sql.getAllWarehouseKeeper"));
 			while(rs.next()) {
 				aux.add(new WharehouseKeeper(rs.getString(1), rs.getString(2), rs.getString(3)));
 			}
