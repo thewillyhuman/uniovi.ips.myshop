@@ -14,10 +14,10 @@ import javax.swing.JButton;
 public class InformacionProductoPedidoPanel extends JPanel{
 	public InformacionProductoPedidoPanel(Order p) {
 		setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		setLayout(new FlowLayout(FlowLayout.LEFT, 30, 4));
+		setLayout(new FlowLayout(FlowLayout.LEFT, 25, 4));
 		getLblIdPedido().setText(p.getIdPedido());
 		getLblPDni().setText(p.getCliente().getDni());
-		getLblDir().setText(p.getCliente().getAddress()+"");
+		getLblDir().setText(p.getCliente().getAddress().toString()+"");
 		int cantidad = 0;
 		for(OrderDetail c : p.getProductos()){
 			cantidad = cantidad + c.getCantidad();

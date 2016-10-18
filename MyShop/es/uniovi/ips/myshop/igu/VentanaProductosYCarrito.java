@@ -83,7 +83,6 @@ public class VentanaProductosYCarrito extends JFrame {
 		contentPane.add(getPnCarrito(), BorderLayout.EAST);
 		contentPane.add(getPnProducts(), BorderLayout.CENTER);
 		contentPane.add(getPnDescripcion(), BorderLayout.SOUTH);
-		inicializarMap();
 		cargarProductsEnLista();
 		cargarProductosEnCarrito();
 	}

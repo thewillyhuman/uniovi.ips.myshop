@@ -9,11 +9,12 @@ import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
 
 import java.awt.Color;
+import javax.swing.JButton;
 
 public class PedidoParaAsignarPanel extends JPanel{
 	public PedidoParaAsignarPanel(Order o) {
 		setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		setLayout(new FlowLayout(FlowLayout.LEFT, 70, 12));
+		setLayout(new FlowLayout(FlowLayout.LEFT, 60, 12));
 		getLblIdPedido().setText(o.getIdPedido());
 		int cantidad = 0;
 		for(OrderDetail p : o.getProductos()){
@@ -24,12 +25,14 @@ public class PedidoParaAsignarPanel extends JPanel{
 		add(getLblIdPedido());
 		add(getLblCantidad());
 		add(getLblFecha());
+		add(getBtnAceptar());
 	}
 
 	private static final long serialVersionUID = 1L;
 	private JLabel lblIdPedido;
 	private JLabel lblCantidad;
 	private JLabel lblFecha;
+	private JButton btnAceptar;
 
 	JLabel getLblIdPedido() {
 		if (lblIdPedido == null) {
@@ -48,5 +51,11 @@ public class PedidoParaAsignarPanel extends JPanel{
 			lblFecha = new JLabel("Fecha");
 		}
 		return lblFecha;
+	}
+	JButton getBtnAceptar() {
+		if (btnAceptar == null) {
+			btnAceptar = new JButton("Aceptar");
+		}
+		return btnAceptar;
 	}
 }

@@ -45,8 +45,6 @@ public class VentanaAlmaceneros extends JFrame {
 	private JTextField txAlmacenero;
 	private JLabel lblId;
 	private JTextField txID;
-	private JPanel pnBotones;
-	private JButton btAceptar1;
 	private JPanel pnAsignacion;
 	private JPanel pnEleccionAlmacenero;
 	private JScrollPane scpEleccionAlmacenero;
@@ -77,6 +75,11 @@ public class VentanaAlmaceneros extends JFrame {
 	private JLabel lblRecogidaLado;
 	private JLabel lblRecogidaPosicion;
 	private JLabel lblRecogidaAltura;
+	private JPanel pnRecogidaPedidos;
+	private JPanel pnEmpaquetadoPedidos;
+	private JPanel pnEleccion;
+	private JPanel pnRecogidaProductos;
+	private JScrollPane scpRecogidaProductos;
 	
 
 	/**
@@ -113,9 +116,8 @@ public class VentanaAlmaceneros extends JFrame {
 		contentPane.add(getPnAsignacionProductos(), "name_36658960011270");
 		contentPane.add(getTbpnEmpaquetadoRecogida(), "name_38548177215768");
 		contentPane.add(getTbpnEmpaquetadoRecogida(), BorderLayout.CENTER);
+		contentPane.add(getPnRecogidaProductos(), "name_6580868539181");
 		cargarAlmaceneros();
-		cargarProductos();
-		cargarPedidosRecogida();
 	}
 	
 	private JPanel getPnAsignacionProductos() {
@@ -124,7 +126,6 @@ public class VentanaAlmaceneros extends JFrame {
 			pnAsignacionProductos.setLayout(new BorderLayout(0, 0));
 			pnAsignacionProductos.add(getPnAsignacion(), BorderLayout.CENTER);
 			pnAsignacionProductos.add(getPnDatosAlmacenero(), BorderLayout.NORTH);
-			pnAsignacionProductos.add(getPnBotones(), BorderLayout.SOUTH);
 		}
 		return pnAsignacionProductos;
 	}
@@ -173,21 +174,6 @@ public class VentanaAlmaceneros extends JFrame {
 		}
 		return txID;
 	}
-	private JPanel getPnBotones() {
-		if (pnBotones == null) {
-			pnBotones = new JPanel();
-			FlowLayout flowLayout = (FlowLayout) pnBotones.getLayout();
-			flowLayout.setAlignment(FlowLayout.RIGHT);
-			pnBotones.add(getBtAceptar1());
-		}
-		return pnBotones;
-	}
-	private JButton getBtAceptar1() {
-		if (btAceptar1 == null) {
-			btAceptar1 = new JButton("Aceptar");
-		}
-		return btAceptar1;
-	}
 
 	private JPanel getPnAsignacion() {
 		if (pnAsignacion == null) {
@@ -210,6 +196,7 @@ public class VentanaAlmaceneros extends JFrame {
 	private JScrollPane getScpEleccionAlmacenero() {
 		if (scpEleccionAlmacenero == null) {
 			scpEleccionAlmacenero = new JScrollPane();
+			scpEleccionAlmacenero.setViewportView(getPnEleccion());
 		}
 		return scpEleccionAlmacenero;
 	}
@@ -265,6 +252,17 @@ public class VentanaAlmaceneros extends JFrame {
 
 		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
 			PedidoParaAsignarPanel aux = new PedidoParaAsignarPanel(c);
+			aux.getBtnAceptar().addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						cargarTercerPanel();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 			cont.add(aux);
 		}
 
@@ -278,11 +276,20 @@ public class VentanaAlmaceneros extends JFrame {
 		repaint();
 	}
 	
-	private void cargarSegundoPanel(Person p) throws SQLException{
+	private void cargarSegundoPanel(WharehouseKeeper p) throws SQLException{
 		getTxAlmacenero().setText(p.getName());
 		getTxID().setText(p.getId());
+		cargarPedidos();
 		getPnAsignacionProductos().transferFocus();
-		cargarPedidos();		
+		getPnEleccionAlmacenero().setVisible(false);
+		getPnAsignacionProductos().setVisible(true);
+	}
+	
+	private void cargarTercerPanel() throws SQLException{
+		getPnAsignacionProductos().setVisible(false);
+		getTbpnEmpaquetadoRecogida().setVisible(true);
+		cargarPedidosRecogida();
+		cargarProductos();
 	}
 	
 	private JPanel getPanel() {
@@ -347,6 +354,7 @@ public class VentanaAlmaceneros extends JFrame {
 	private JScrollPane getScpEmpaquetado() {
 		if (scpEmpaquetado == null) {
 			scpEmpaquetado = new JScrollPane();
+			scpEmpaquetado.setViewportView(getPnEmpaquetadoPedidos());
 		}
 		return scpEmpaquetado;
 	}
@@ -370,6 +378,7 @@ public class VentanaAlmaceneros extends JFrame {
 	private JScrollPane getScpRecogida() {
 		if (scpRecogida == null) {
 			scpRecogida = new JScrollPane();
+			scpRecogida.setViewportView(getPnRecogidaPedidos());
 		}
 		return scpRecogida;
 	}
@@ -437,7 +446,7 @@ public class VentanaAlmaceneros extends JFrame {
 	
 	private void cargarProductos() throws SQLException {
 		Container cont = new Container();
-		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
+		for (Order c : new GetOrders().getOrdersByStatus(Status.SOLICITADO)) {
 			for(OrderDetail p : c.getProductos()){
 				InformacionProductoPedidoPanel aux = new InformacionProductoPedidoPanel(c);
 				aux.getBtnEmpaquetar().setActionCommand(p.getProducto().getIDProducto());
@@ -453,7 +462,7 @@ public class VentanaAlmaceneros extends JFrame {
 			}
 		}
 
-		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.PENDIENTE).size(), 1));
+		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.SOLICITADO).size(), 1));
 
 		revalidate();
 		repaint();
@@ -466,7 +475,7 @@ public class VentanaAlmaceneros extends JFrame {
 	private void cargarPedidosRecogida() throws SQLException {
 		Container cont = new Container();
 		
-		for (Order c : new GetOrders().getOrdersByStatus(Status.LISTO)) {
+		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
 			for(OrderDetail p : c.getProductos()){
 				RecogidaPedidosPanel aux = new RecogidaPedidosPanel(c,p);
 				aux.getBtnRecoger().addActionListener(new ActionListener() {
@@ -480,7 +489,7 @@ public class VentanaAlmaceneros extends JFrame {
 			}
 		}
 
-		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.LISTO).size(), 1));
+		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.PENDIENTE).size(), 1));
 
 		revalidate();
 		repaint();
@@ -546,5 +555,40 @@ public class VentanaAlmaceneros extends JFrame {
 			lblRecogidaAltura = new JLabel("Altura");
 		}
 		return lblRecogidaAltura;
+	}
+	private JPanel getPnRecogidaPedidos() {
+		if (pnRecogidaPedidos == null) {
+			pnRecogidaPedidos = new JPanel();
+			pnRecogidaPedidos.setLayout(new GridLayout(0, 1, 0, 0));
+		}
+		return pnRecogidaPedidos;
+	}
+	private JPanel getPnEmpaquetadoPedidos() {
+		if (pnEmpaquetadoPedidos == null) {
+			pnEmpaquetadoPedidos = new JPanel();
+			pnEmpaquetadoPedidos.setLayout(new GridLayout(0, 1, 0, 0));
+		}
+		return pnEmpaquetadoPedidos;
+	}
+	private JPanel getPnEleccion() {
+		if (pnEleccion == null) {
+			pnEleccion = new JPanel();
+			pnEleccion.setLayout(new GridLayout(0, 1, 0, 0));
+		}
+		return pnEleccion;
+	}
+	private JPanel getPnRecogidaProductos() {
+		if (pnRecogidaProductos == null) {
+			pnRecogidaProductos = new JPanel();
+			pnRecogidaProductos.setLayout(new BorderLayout(0, 0));
+			pnRecogidaProductos.add(getScpRecogidaProductos(), BorderLayout.CENTER);
+		}
+		return pnRecogidaProductos;
+	}
+	private JScrollPane getScpRecogidaProductos() {
+		if (scpRecogidaProductos == null) {
+			scpRecogidaProductos = new JScrollPane();
+		}
+		return scpRecogidaProductos;
 	}
 }

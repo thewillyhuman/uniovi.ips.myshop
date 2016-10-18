@@ -212,7 +212,7 @@ public class EmpaquetadoRecogidaPedidos extends JFrame {
 	
 	private void cargarProductos() throws SQLException {
 		Container cont = new Container();
-		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
+		for (Order c : new GetOrders().getOrdersByStatus(Status.SOLICITADO)) {
 			for(OrderDetail p : c.getProductos()){
 				InformacionProductoPedidoPanel aux = new InformacionProductoPedidoPanel(c);
 				aux.getBtnEmpaquetar().setActionCommand(p.getProducto().getIDProducto());
@@ -228,7 +228,7 @@ public class EmpaquetadoRecogidaPedidos extends JFrame {
 			}
 		}
 
-		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.PENDIENTE).size(), 1));
+		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.SOLICITADO).size(), 1));
 
 		revalidate();
 		repaint();
@@ -241,7 +241,7 @@ public class EmpaquetadoRecogidaPedidos extends JFrame {
 	private void cargarPedidosRecogida() throws SQLException {
 		Container cont = new Container();
 		
-		for (Order c : new GetOrders().getOrdersByStatus(Status.LISTO)) {
+		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
 			for(OrderDetail p : c.getProductos()){
 				RecogidaPedidosPanel aux = new RecogidaPedidosPanel(c,p);
 				aux.getBtnRecoger().addActionListener(new ActionListener() {
@@ -255,7 +255,7 @@ public class EmpaquetadoRecogidaPedidos extends JFrame {
 			}
 		}
 
-		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.LISTO).size(), 1));
+		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.PENDIENTE).size(), 1));
 
 		revalidate();
 		repaint();
