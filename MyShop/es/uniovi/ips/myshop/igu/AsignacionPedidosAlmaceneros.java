@@ -10,9 +10,13 @@ import javax.swing.border.EmptyBorder;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 
+import es.uniovi.ips.myshop.connectors.GetOrders;
+import es.uniovi.ips.myshop.connectors.GetWarehouseKeepers;
 import es.uniovi.ips.myshop.model.order.Order;
+import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.people.Person;
+import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -20,6 +24,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 
 public class AsignacionPedidosAlmaceneros extends JFrame {
 
@@ -46,8 +52,6 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 	private JScrollPane scpEleccionAlmacenero;
 	private JPanel pnDescripcion;
 	private JLabel label;
-	private List<Person> listaAlmaceneros = new ArrayList<Person>();
-	private List<Order> listaPedidos = new ArrayList<Order>();
 	private JPanel panel;
 	private JLabel lblIdPedido;
 	private JLabel lblTamao;
@@ -199,20 +203,24 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 	private void cargarAlmaceneros() {
 		Container cont = new Container();
 
-		for (Person c : listaAlmaceneros) {
-			InformacionAlmaceneroPanel aux = new InformacionAlmaceneroPanel();
+		for (WharehouseKeeper c : new GetWarehouseKeepers().getAll()) {
+			InformacionAlmaceneroPanel aux = new InformacionAlmaceneroPanel(c);
 			aux.getBtEsteSoyYo().addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					cargarSegundoPanel(c);	
+					try {
+						cargarSegundoPanel(c);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}	
 				}
 			});
-
+			aux.setPreferredSize(new Dimension(getScpEleccionAlmacenero().getWidth(), 233));
 			cont.add(aux);
 		}
 
-		cont.setLayout(new GridLayout(listaAlmaceneros.size(), 1));
+		cont.setLayout(new GridLayout(new GetWarehouseKeepers().getAll().size(), 1));
 
 		revalidate();
 		repaint();
@@ -224,23 +232,15 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 	
 	
 
-	private void cargarPedidos() {
+	private void cargarPedidos() throws SQLException {
 		Container cont = new Container();
 
-		for (Order c : listaPedidos) {
-			PedidoParaAsignarPanel aux = new PedidoParaAsignarPanel();
-			aux.getLblIdPedido().setText(c.getIdPedido());
-			int cantidad = 0;
-			for(OrderDetail p : c.getProductos()){
-				cantidad = cantidad + p.getCantidad();
-			}
-			aux.getLblCantidad().setText(cantidad+ "");
-			aux.getLblFecha().setText(c.getDate() + "");;
-
+		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
+			PedidoParaAsignarPanel aux = new PedidoParaAsignarPanel(c);
 			cont.add(aux);
 		}
 
-		cont.setLayout(new GridLayout(listaAlmaceneros.size(), 1));
+		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.PENDIENTE).size(), 1));
 
 		revalidate();
 		repaint();
@@ -250,7 +250,7 @@ public class AsignacionPedidosAlmaceneros extends JFrame {
 		repaint();
 	}
 	
-	private void cargarSegundoPanel(Person p){
+	private void cargarSegundoPanel(Person p) throws SQLException{
 		getTxAlmacenero().setText(p.getName());
 		getTxID().setText(p.getId());
 		getPnAsignacionProductos().transferFocus();

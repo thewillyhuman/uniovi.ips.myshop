@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import es.uniovi.ips.myshop.model.product.Product;
+
 import javax.swing.JButton;
 
 public class ProductoListaPanel extends JPanel{
@@ -16,9 +18,9 @@ public class ProductoListaPanel extends JPanel{
 	private JTextField txExistencias;
 	private JTextField txNombreProducto;
 	private JButton btBorrar;
-	private JButton btAñadir;
+	private JButton btAniadir;
 
-	public ProductoListaPanel(){
+	public ProductoListaPanel(Product p){
 		setLayout(null);
 		add(getLblFotoProducto());
 		add(getLblPrecio());
@@ -27,7 +29,7 @@ public class ProductoListaPanel extends JPanel{
 		add(getTxExistencias());
 		add(getTxNombreProducto());
 		add(getBtBorrar());
-		add(getBtAñadir());
+		add(getBtAniadir());
 	}
 	private JLabel getLblFotoProducto() {
 		if (lblFotoProducto == null) {
@@ -84,12 +86,12 @@ public class ProductoListaPanel extends JPanel{
 		}
 		return btBorrar;
 	}
-	JButton getBtAñadir() {
-		if (btAñadir == null) {
-			btAñadir = new JButton("A\u00F1adir");
-			btAñadir.setBounds(199, 157, 89, 23);
+	JButton getBtAniadir() {
+		if (btAniadir == null) {
+			btAniadir = new JButton("A\u00F1adir");
+			btAniadir.setBounds(199, 157, 89, 23);
 		}
-		return btAñadir;
+		return btAniadir;
 	}
 
 }

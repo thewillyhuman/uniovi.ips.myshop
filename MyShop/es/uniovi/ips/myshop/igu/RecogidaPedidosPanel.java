@@ -1,16 +1,27 @@
 package es.uniovi.ips.myshop.igu;
 
 import javax.swing.JPanel;
+
+import es.uniovi.ips.myshop.model.order.Order;
+import es.uniovi.ips.myshop.model.order.OrderDetail;
+import es.uniovi.ips.myshop.model.warehouse.ProductLocation;
+
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
 public class RecogidaPedidosPanel extends JPanel{
-	public RecogidaPedidosPanel() {
+	public RecogidaPedidosPanel(Order o,OrderDetail c) {
 		FlowLayout flowLayout = (FlowLayout) getLayout();
 		flowLayout.setVgap(10);
 		flowLayout.setHgap(30);
 		flowLayout.setAlignment(FlowLayout.LEFT);
+		getLblPedidoId().setText(o.getIdPedido());
+		ProductLocation l = c.getProducto().getLocalizacion();
+		getLblPasillo().setText(l.getPasillo()+"");
+		getLblLado().setText(l.getLado()+"");
+		getLblPosicion().setText(l.getPosicion()+"");
+		getLblAltura().setText(l.getAltura()+"");
 		add(getLblPedidoId());
 		add(getLblPasillo());
 		add(getLblLado());
