@@ -5,7 +5,6 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
-import es.uniovi.ips.myshop.model.people.Person;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 
 import java.awt.Color;

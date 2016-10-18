@@ -32,7 +32,7 @@ public class GetCustomers extends Connector implements OutBoardConnector {
 	 *            to look for in the database.
 	 * @return the customer matching with the customer ID if founded. Null
 	 *         otherwise.
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public Customer getCustomer(String customerID) {
 		this.customerID = customerID;
@@ -46,7 +46,7 @@ public class GetCustomers extends Connector implements OutBoardConnector {
 		return customer;
 	}
 
-	protected void query()  {
+	protected void query() {
 		ResultSet rs = null;
 		try {
 			rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getCustomerByID"), customerID);
@@ -63,9 +63,12 @@ public class GetCustomers extends Connector implements OutBoardConnector {
 		}
 		try {
 			rs.next();
-			rs2.next();
-			customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-					new Address(rs2.getString(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
+			if (rs2.next()) {
+				customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						new Address(rs2.getString(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
+			} else {
+				customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), null);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

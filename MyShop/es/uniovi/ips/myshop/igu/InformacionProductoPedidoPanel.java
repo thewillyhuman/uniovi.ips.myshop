@@ -7,7 +7,6 @@ import javax.swing.border.LineBorder;
 
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
-import es.uniovi.ips.myshop.model.product.Product;
 
 import java.awt.Color;
 import javax.swing.JButton;

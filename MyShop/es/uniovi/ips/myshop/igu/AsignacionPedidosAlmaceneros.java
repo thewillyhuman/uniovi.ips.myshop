@@ -14,7 +14,6 @@ import es.uniovi.ips.myshop.connectors.GetOrders;
 import es.uniovi.ips.myshop.connectors.GetWarehouseKeepers;
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.Order.Status;
-import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.people.Person;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 
@@ -25,8 +24,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
