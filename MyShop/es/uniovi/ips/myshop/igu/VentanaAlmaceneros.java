@@ -25,9 +25,7 @@ import es.uniovi.ips.myshop.connectors.GetWarehouseKeepers;
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.order.Order.Status;
-import es.uniovi.ips.myshop.model.people.Person;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
-import es.uniovi.ips.myshop.model.product.Product;
 
 import java.awt.CardLayout;
 import java.awt.Container;
@@ -61,8 +59,6 @@ public class VentanaAlmaceneros extends JFrame {
 	private JPanel pnBotonesEmpaquetado;
 	private JButton btImprimirFactura;
 	private JScrollPane scpRecogida;
-	private JPanel pnBotonesRecogida;
-	private JButton btAceptar2;
 	private JPanel pnIndiceEmpaquetado;
 	private JLabel lblIndicePedidoId;
 	private JLabel lblIndiceDireccion;
@@ -71,15 +67,18 @@ public class VentanaAlmaceneros extends JFrame {
 	private JLabel lblIndiceFecha;
 	private JPanel pnIndiceRecogida;
 	private JLabel lblRecogidaPedidoId;
-	private JLabel lblRecogidaPasillo;
-	private JLabel lblRecogidaLado;
-	private JLabel lblRecogidaPosicion;
-	private JLabel lblRecogidaAltura;
+	private JLabel lblDniCliente;
+	private JLabel lblDireccionCliente;
+	private JLabel lblFechaPedido;
 	private JPanel pnRecogidaPedidos;
 	private JPanel pnEmpaquetadoPedidos;
 	private JPanel pnEleccion;
 	private JPanel pnRecogidaProductos;
 	private JScrollPane scpRecogidaProductos;
+	private JPanel pnRecogidaProductosLista;
+	private JPanel pnDescripcionVentanaRecogidaProductos;
+	private JLabel lblRecogidaDeProductos;
+	private JTextField txRecogidaPedido;
 	
 
 	/**
@@ -346,7 +345,6 @@ public class VentanaAlmaceneros extends JFrame {
 			pnRecogida = new JPanel();
 			pnRecogida.setLayout(new BorderLayout(0, 0));
 			pnRecogida.add(getScpRecogida(), BorderLayout.CENTER);
-			pnRecogida.add(getPnBotonesRecogida(), BorderLayout.SOUTH);
 			pnRecogida.add(getPnIndiceRecogida(), BorderLayout.NORTH);
 		}
 		return pnRecogida;
@@ -381,22 +379,6 @@ public class VentanaAlmaceneros extends JFrame {
 			scpRecogida.setViewportView(getPnRecogidaPedidos());
 		}
 		return scpRecogida;
-	}
-	
-	private JPanel getPnBotonesRecogida() {
-		if (pnBotonesRecogida == null) {
-			pnBotonesRecogida = new JPanel();
-			FlowLayout flowLayout = (FlowLayout) pnBotonesRecogida.getLayout();
-			flowLayout.setAlignment(FlowLayout.RIGHT);
-			pnBotonesRecogida.add(getBtAceptar2());
-		}
-		return pnBotonesRecogida;
-	}
-	private JButton getBtAceptar2() {
-		if (btAceptar2 == null) {
-			btAceptar2 = new JButton("Aceptar");
-		}
-		return btAceptar2;
 	}
 	private JPanel getPnIndiceEmpaquetado() {
 		if (pnIndiceEmpaquetado == null) {
@@ -476,17 +458,15 @@ public class VentanaAlmaceneros extends JFrame {
 		Container cont = new Container();
 		
 		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
-			for(OrderDetail p : c.getProductos()){
-				RecogidaPedidosPanel aux = new RecogidaPedidosPanel(c,p);
-				aux.getBtnRecoger().addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						realizarRecogida(p.getProducto());
-					}
-				});
-				aux.setPreferredSize(new Dimension(getScpRecogida().getWidth(), 233));
-				cont.add(aux);
-			}
+			RecogidaPedidosPanel aux = new RecogidaPedidosPanel(c);
+			aux.getBtnRecoger().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					realizarRecogida(c);
+				}
+			});
+			aux.setPreferredSize(new Dimension(getScpRecogida().getWidth(), 233));
+			cont.add(aux);
 		}
 
 		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.PENDIENTE).size(), 1));
@@ -499,8 +479,10 @@ public class VentanaAlmaceneros extends JFrame {
 		repaint();
 	}
 	
-	private void realizarRecogida(Product p){
-		JOptionPane.showMessageDialog(this, "El producto " + p.getDescripcion() + " \n ha sido recogido con exito");
+	private void realizarRecogida(Order o){
+		cargarProductosPedido(o);
+		getTbpnEmpaquetadoRecogida().setVisible(false);
+		getPnRecogidaProductos().setVisible(true);
 	}
 	
 	private void realizarEmpaquetado(Order o){
@@ -519,10 +501,9 @@ public class VentanaAlmaceneros extends JFrame {
 			flowLayout.setHgap(40);
 			flowLayout.setAlignment(FlowLayout.LEFT);
 			pnIndiceRecogida.add(getLblRecogidaPedidoId());
-			pnIndiceRecogida.add(getLblRecogidaPasillo());
-			pnIndiceRecogida.add(getLblRecogidaLado());
-			pnIndiceRecogida.add(getLblRecogidaPosicion());
-			pnIndiceRecogida.add(getLblRecogidaAltura());
+			pnIndiceRecogida.add(getLblDniCliente());
+			pnIndiceRecogida.add(getLblDireccionCliente());
+			pnIndiceRecogida.add(getLblFechaPedido());
 		}
 		return pnIndiceRecogida;
 	}
@@ -532,29 +513,23 @@ public class VentanaAlmaceneros extends JFrame {
 		}
 		return lblRecogidaPedidoId;
 	}
-	private JLabel getLblRecogidaPasillo() {
-		if (lblRecogidaPasillo == null) {
-			lblRecogidaPasillo = new JLabel("Pasillo");
+	private JLabel getLblDniCliente() {
+		if (lblDniCliente == null) {
+			lblDniCliente = new JLabel("DNI");
 		}
-		return lblRecogidaPasillo;
+		return lblDniCliente;
 	}
-	private JLabel getLblRecogidaLado() {
-		if (lblRecogidaLado == null) {
-			lblRecogidaLado = new JLabel("Lado");
+	private JLabel getLblDireccionCliente() {
+		if (lblDireccionCliente == null) {
+			lblDireccionCliente = new JLabel("Direccion");
 		}
-		return lblRecogidaLado;
+		return lblDireccionCliente;
 	}
-	private JLabel getLblRecogidaPosicion() {
-		if (lblRecogidaPosicion == null) {
-			lblRecogidaPosicion = new JLabel("Posicion");
+	private JLabel getLblFechaPedido() {
+		if (lblFechaPedido == null) {
+			lblFechaPedido = new JLabel("Fecha");
 		}
-		return lblRecogidaPosicion;
-	}
-	private JLabel getLblRecogidaAltura() {
-		if (lblRecogidaAltura == null) {
-			lblRecogidaAltura = new JLabel("Altura");
-		}
-		return lblRecogidaAltura;
+		return lblFechaPedido;
 	}
 	private JPanel getPnRecogidaPedidos() {
 		if (pnRecogidaPedidos == null) {
@@ -582,13 +557,80 @@ public class VentanaAlmaceneros extends JFrame {
 			pnRecogidaProductos = new JPanel();
 			pnRecogidaProductos.setLayout(new BorderLayout(0, 0));
 			pnRecogidaProductos.add(getScpRecogidaProductos(), BorderLayout.CENTER);
+			pnRecogidaProductos.add(getPnDescripcionVentanaRecogidaProductos(), BorderLayout.NORTH);
 		}
 		return pnRecogidaProductos;
 	}
 	private JScrollPane getScpRecogidaProductos() {
 		if (scpRecogidaProductos == null) {
 			scpRecogidaProductos = new JScrollPane();
+			scpRecogidaProductos.setViewportView(getPnRecogidaProductosLista());
 		}
 		return scpRecogidaProductos;
+	}
+	private JPanel getPnRecogidaProductosLista() {
+		if (pnRecogidaProductosLista == null) {
+			pnRecogidaProductosLista = new JPanel();
+			pnRecogidaProductosLista.setLayout(new GridLayout(0, 1, 0, 0));
+		}
+		return pnRecogidaProductosLista;
+	}
+	private JPanel getPnDescripcionVentanaRecogidaProductos() {
+		if (pnDescripcionVentanaRecogidaProductos == null) {
+			pnDescripcionVentanaRecogidaProductos = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) pnDescripcionVentanaRecogidaProductos.getLayout();
+			flowLayout.setHgap(40);
+			pnDescripcionVentanaRecogidaProductos.add(getLblRecogidaDeProductos());
+			pnDescripcionVentanaRecogidaProductos.add(getTxRecogidaPedido());
+		}
+		return pnDescripcionVentanaRecogidaProductos;
+	}
+	private JLabel getLblRecogidaDeProductos() {
+		if (lblRecogidaDeProductos == null) {
+			lblRecogidaDeProductos = new JLabel("Recogida de productos del pedido: ");
+		}
+		return lblRecogidaDeProductos;
+	}
+	private JTextField getTxRecogidaPedido() {
+		if (txRecogidaPedido == null) {
+			txRecogidaPedido = new JTextField();
+			txRecogidaPedido.setEditable(false);
+			txRecogidaPedido.setColumns(10);
+		}
+		return txRecogidaPedido;
+	}
+	
+	private void cargarProductosPedido(Order o) {
+		Container cont = new Container();
+		getTxID().setText(o.getIdPedido());
+		for (OrderDetail c : o.getProductos()) {
+			PedidoListaPanel aux = new PedidoListaPanel(c);
+			aux.getBtnRecoger().setActionCommand(c.getProducto().getIDProducto());
+			aux.getBtnRecoger().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					mostrarConfirmacionCodigoProducto(aux.getBtnRecoger().getActionCommand());	
+				}
+			});
+			aux.setPreferredSize(new Dimension(getScpRecogidaProductos().getWidth(), 233));
+			cont.add(aux);
+		}
+
+		cont.setLayout(new GridLayout(o.getProductos().size(), 1));
+
+		revalidate();
+		repaint();
+
+		getScpRecogidaProductos().getViewport().setView(cont);
+		revalidate();
+		repaint();
+	}
+	
+	private void mostrarConfirmacionCodigoProducto(String s){
+		VentanaConfirmacionCodigo vc = new VentanaConfirmacionCodigo(s);
+		vc.setVisible(true);
+		vc.setModal(true);
+		vc.setLocationRelativeTo(this);
 	}
 }
