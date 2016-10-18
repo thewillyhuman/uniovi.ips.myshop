@@ -8,6 +8,7 @@ import java.util.List;
 import es.uniovi.ips.myshop.database.Connector;
 import es.uniovi.ips.myshop.database.OutBoardConnector;
 import es.uniovi.ips.myshop.database.client.ConnectDatabase;
+import es.uniovi.ips.myshop.database.client.DisconnectDatabase;
 import es.uniovi.ips.myshop.model.product.Product;
 import es.uniovi.ips.myshop.model.warehouse.ProductLocation;
 import es.uniovi.ips.myshop.model.warehouse.ProductLocation.Lado;
@@ -47,7 +48,7 @@ public class GetProducts extends Connector implements OutBoardConnector {
 					new ProductLocation(rs2.getInt(2), rs2.getInt(4), rs2.getInt(5), side));
 			aux.add(product);
 		}
-		super.getDatabase().closeConnection();
+		new DisconnectDatabase(super.getDatabase());
 		return aux;
 	}
 
@@ -60,7 +61,7 @@ public class GetProducts extends Connector implements OutBoardConnector {
 	 * @throws SQLException
 	 */
 	public Product getProduct(String productID) throws SQLException {
-		super.getDatabase().connect();
+		new ConnectDatabase(super.getDatabase());
 		ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getProductByID"), productID);
 		rs.next();
 		ResultSet rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getProductLocationByProductID"), rs.getString(1));
@@ -72,7 +73,7 @@ public class GetProducts extends Connector implements OutBoardConnector {
 			side = Lado.IZQUIERDA;
 		Product aux =  new Product(rs.getString(1), rs.getString(4), rs.getDouble(2),
 				new ProductLocation(rs2.getInt(2), rs2.getInt(4), rs2.getInt(5), side));
-		super.getDatabase().closeConnection();
+		new DisconnectDatabase(super.getDatabase());
 		return aux;
 
 	}

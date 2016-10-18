@@ -24,12 +24,24 @@ public class MySQLDatabase extends Database {
 			System.err.println("Error while registering MySQL Driver");
 			e.printStackTrace();
 		}
+		try {
+			connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public Connection connect() throws SQLException {
 		this.conn = DriverManager.getConnection(url, user, password);
 		System.out.println("--> Connection " + this.conn.toString() + " has been oppened succesfully.");
+		return this.conn;
+	}
+	
+	@Override
+	public Connection connectToPool() throws SQLException {
+		this.conn = cp.getConnection();
 		return this.conn;
 	}
 }

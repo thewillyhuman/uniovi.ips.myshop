@@ -161,6 +161,7 @@ public class SimpleTest {
 	
 	@Test
 	public void getAllOrdersTest() {
+		
 		try {
 			for(Order o : new GetOrders().getAllOrders()) {
 				System.out.println(o.getIdPedido() + " " +String.valueOf(o.getEstado()));
