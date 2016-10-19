@@ -23,6 +23,6 @@ public class ConnectDatabase {
 	 *             if there's errors openning the connection.
 	 */
 	public ConnectDatabase(Database db) throws SQLException {
-		db.connect();
+		//db.connect();
 	}
 }

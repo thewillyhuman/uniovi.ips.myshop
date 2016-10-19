@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import es.uniovi.ips.myshop.database.Connector;
 import es.uniovi.ips.myshop.database.OutBoardConnector;
 import es.uniovi.ips.myshop.database.client.ConnectDatabase;
+import es.uniovi.ips.myshop.database.client.DisconnectDatabase;
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.properties.Properties;
@@ -79,7 +80,7 @@ public class GetOrders extends Connector implements OutBoardConnector{
 			//order.addProduct(new , quantity);
 			aux.add(order);
 		}
-		//db.closeConnection();
+		new DisconnectDatabase(super.getDatabase());
 		return aux;
 	}
 }
