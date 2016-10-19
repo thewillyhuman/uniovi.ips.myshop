@@ -9,6 +9,7 @@ import es.uniovi.ips.myshop.database.Connector;
 import es.uniovi.ips.myshop.database.OutBoardConnector;
 import es.uniovi.ips.myshop.database.client.ConnectDatabase;
 import es.uniovi.ips.myshop.database.client.DisconnectDatabase;
+import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 import es.uniovi.ips.myshop.properties.Properties;
 
@@ -34,5 +35,19 @@ public class GetWarehouseKeepers extends Connector implements OutBoardConnector 
 		new DisconnectDatabase(super.getDatabase());
 		
 		return aux;
+	}
+	
+
+	public WharehouseKeeper getByID(int parseInt) {
+		return null;
+	}
+	
+	public boolean isOccupies(WharehouseKeeper wk) {
+		return false;
+	}
+
+	public Order getCurrentOrder() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

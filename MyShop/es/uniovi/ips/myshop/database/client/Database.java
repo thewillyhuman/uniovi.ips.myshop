@@ -9,8 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import snaq.db.ConnectionPool;
-
 public abstract class Database {
 
 	public static final String PROTOCOL_JDBC = "jdbc";
@@ -28,7 +26,6 @@ public abstract class Database {
 	protected PreparedStatement psQuery = null;
 	protected CallableStatement cs = null;
 	protected ResultSet rs = null;
-	protected ConnectionPool cp = null;
 
 	protected Database() {}
 
@@ -174,6 +171,4 @@ public abstract class Database {
 		}
 		return toReturn;
 	}
-	
-	public abstract Connection connectToPool() throws SQLException;
 }

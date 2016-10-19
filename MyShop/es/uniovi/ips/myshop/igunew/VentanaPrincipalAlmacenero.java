@@ -402,7 +402,7 @@ public class VentanaPrincipalAlmacenero extends JFrame {
 	}
 
 	private void setPanelRecogida(Order order) {
-		Object[] columnNames = { "ID PRODUCTO", "PASILLO", "LADO", "POSICIÓN", "ALTURA" };
+		Object[] columnNames = { "ID PRODUCTO", "PASILLO", "LADO", "POSICIÓN", "ALTURA", "CANTIDAD" };
 		modeloPorRecoger= new ModeloTablaNoEditable(columnNames, 0);
 		modeloRecogido = new ModeloTablaNoEditable(columnNames, 0);
 		this.getLblNDeArtculos().setText(Integer.toString(order.size()));

@@ -52,6 +52,7 @@ public class ModeloTablaNoEditable extends DefaultTableModel {
 		newRow[2] = c.getProducto().getLocalizacion().getLado();
 		newRow[3] = c.getProducto().getLocalizacion().getPosicion();
 		newRow[4] = c.getProducto().getLocalizacion().getAltura();
+		newRow[5] = c.getCantidad();
 		super.addRow(newRow);
 		li.add(c);
 	}
