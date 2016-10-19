@@ -7,9 +7,12 @@ import es.uniovi.ips.myshop.model.order.Order;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class RecogidaPedidosPanel extends JPanel{
 	public RecogidaPedidosPanel(Order o) {
+		setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		FlowLayout flowLayout = (FlowLayout) getLayout();
 		flowLayout.setVgap(10);
 		flowLayout.setHgap(30);

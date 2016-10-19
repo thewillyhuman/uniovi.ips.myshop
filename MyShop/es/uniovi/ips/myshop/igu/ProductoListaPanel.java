@@ -7,6 +7,9 @@ import javax.swing.JTextField;
 import es.uniovi.ips.myshop.model.product.Product;
 
 import javax.swing.JButton;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.FlowLayout;
 
 public class ProductoListaPanel extends JPanel{
 
@@ -18,17 +21,19 @@ public class ProductoListaPanel extends JPanel{
 	private JButton btAniadir;
 
 	public ProductoListaPanel(Product p){
-		setLayout(null);
+		setBorder(new LineBorder(new Color(0, 0, 0)));
+		getTxPrecio().setText(p.getPrecio()+"");
+		getTxNombreProducto().setText(p.getDescripcion());
+		setLayout(new FlowLayout(FlowLayout.LEFT, 25, 10));
+		add(getTxNombreProducto());
 		add(getLblPrecio());
 		add(getTxPrecio());
-		add(getTxNombreProducto());
-		add(getBtBorrar());
 		add(getBtAniadir());
+		add(getBtBorrar());
 	}
 	private JLabel getLblPrecio() {
 		if (lblPrecio == null) {
 			lblPrecio = new JLabel("Precio: ");
-			lblPrecio.setBounds(211, 35, 52, 14);
 		}
 		return lblPrecio;
 	}
@@ -36,7 +41,6 @@ public class ProductoListaPanel extends JPanel{
 		if (txPrecio == null) {
 			txPrecio = new JTextField();
 			txPrecio.setEditable(false);
-			txPrecio.setBounds(296, 32, 80, 20);
 			txPrecio.setColumns(10);
 		}
 		return txPrecio;
@@ -45,7 +49,6 @@ public class ProductoListaPanel extends JPanel{
 		if (txNombreProducto == null) {
 			txNombreProducto = new JTextField();
 			txNombreProducto.setEditable(false);
-			txNombreProducto.setBounds(27, 32, 140, 20);
 			txNombreProducto.setColumns(10);
 		}
 		return txNombreProducto;
@@ -53,14 +56,12 @@ public class ProductoListaPanel extends JPanel{
 	JButton getBtBorrar() {
 		if (btBorrar == null) {
 			btBorrar = new JButton("Borrar");
-			btBorrar.setBounds(310, 83, 89, 23);
 		}
 		return btBorrar;
 	}
 	JButton getBtAniadir() {
 		if (btAniadir == null) {
 			btAniadir = new JButton("A\u00F1adir");
-			btAniadir.setBounds(211, 83, 89, 23);
 		}
 		return btAniadir;
 	}

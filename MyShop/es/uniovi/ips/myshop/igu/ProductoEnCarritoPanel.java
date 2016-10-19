@@ -16,7 +16,7 @@ public class ProductoEnCarritoPanel extends JPanel{
 	public ProductoEnCarritoPanel(Product p) {
 		this.p = p;
 		setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		FlowLayout flowLayout = new FlowLayout(FlowLayout.RIGHT, 75, 7);
+		FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT, 50, 7);
 		setLayout(flowLayout);
 		add(getLbProducto());
 		add(getLbPrecio());
@@ -45,8 +45,7 @@ public class ProductoEnCarritoPanel extends JPanel{
 	JSpinner getSpCantidad() {
 		if (spCantidad == null) {
 			spCantidad = new JSpinner();
-			spCantidad.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-			spCantidad.setValue(1);
+			spCantidad.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
 		}
 		return spCantidad;
 	}

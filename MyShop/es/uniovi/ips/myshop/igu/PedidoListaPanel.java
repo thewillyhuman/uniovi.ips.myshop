@@ -8,7 +8,8 @@ import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.warehouse.ProductLocation;
 
 import javax.swing.JButton;
-import java.awt.FlowLayout;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class PedidoListaPanel extends JPanel{
 
@@ -26,8 +27,10 @@ public class PedidoListaPanel extends JPanel{
 	private JButton btnRecoger;
 	private JLabel lblCantidad;
 	private JTextField txCantidad;
+	private JTextField txIdProducto;
 
 	public PedidoListaPanel(OrderDetail p){
+		setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		setLayout(null);
 		getTxProducto().setText(p.getProducto().getDescripcion());
 		ProductLocation l = p.getProducto().getLocalizacion();
@@ -36,6 +39,7 @@ public class PedidoListaPanel extends JPanel{
 		getTxPosicion().setText(l.getPosicion()+"");
 		getTxAltura().setText(l.getAltura()+"");
 		getTxCantidad().setText(p.getCantidad()+"");
+		getTxIdProducto().setText(p.getProducto().getIDProducto());
 		add(getLblProducto());
 		add(getTxProducto());
 		add(getLblPasillo());
@@ -49,6 +53,7 @@ public class PedidoListaPanel extends JPanel{
 		add(getBtnRecoger());
 		add(getLblCantidad());
 		add(getTxCantidad());
+		add(getTxIdProducto());
 	}
 	private JLabel getLblProducto() {
 		if (lblProducto == null) {
@@ -61,7 +66,7 @@ public class PedidoListaPanel extends JPanel{
 		if (txProducto == null) {
 			txProducto = new JTextField();
 			txProducto.setEditable(false);
-			txProducto.setBounds(113, 8, 299, 20);
+			txProducto.setBounds(113, 8, 318, 20);
 			txProducto.setColumns(10);
 		}
 		return txProducto;
@@ -152,5 +157,14 @@ public class PedidoListaPanel extends JPanel{
 			txCantidad.setColumns(10);
 		}
 		return txCantidad;
+	}
+	private JTextField getTxIdProducto() {
+		if (txIdProducto == null) {
+			txIdProducto = new JTextField();
+			txIdProducto.setEditable(false);
+			txIdProducto.setBounds(227, 102, 86, 20);
+			txIdProducto.setColumns(10);
+		}
+		return txIdProducto;
 	}
 }
