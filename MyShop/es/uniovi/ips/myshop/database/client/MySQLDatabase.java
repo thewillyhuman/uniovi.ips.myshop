@@ -38,4 +38,10 @@ public class MySQLDatabase extends Database {
 		System.out.println("--> Connection " + this.conn.toString() + " has been oppened succesfully.");
 		return this.conn;
 	}
+	
+	@Override
+	public Connection connectToPool() throws SQLException {
+		this.conn = cp.getConnection();
+		return this.conn;
+	}
 }
