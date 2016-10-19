@@ -7,6 +7,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -55,8 +59,7 @@ public class VentanaAlmaceneros extends JFrame {
 	private JLabel lblIndiceFecha;
 	private JPanel pnIndiceRecogida;
 	private JLabel lblRecogidaPedidoId;
-	private JLabel lblDniCliente;
-	private JLabel lblDireccionCliente;
+	private JLabel lblTamanio;
 	private JLabel lblFechaPedido;
 	private JPanel pnRecogidaPedidos;
 	private JPanel pnEmpaquetadoPedidos;
@@ -107,6 +110,7 @@ public class VentanaAlmaceneros extends JFrame {
 	 * @throws SQLException 
 	 */
 	public VentanaAlmaceneros() throws SQLException {
+		setTitle("OT");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 507, 312);
 		contentPane = new JPanel();
@@ -192,7 +196,7 @@ public class VentanaAlmaceneros extends JFrame {
 	private JTabbedPane getTbpnEmpaquetadoRecogida() {
 		if (tbpnEmpaquetadoRecogida == null) {
 			tbpnEmpaquetadoRecogida = new JTabbedPane(JTabbedPane.TOP);
-			tbpnEmpaquetadoRecogida.addTab("Recogida", null, getPnRecogida(), null);
+			tbpnEmpaquetadoRecogida.addTab("Pendientes", null, getPnRecogida(), null);
 			tbpnEmpaquetadoRecogida.addTab("Empaquetado", null, getPnEmpaquetado(), null);
 		}
 		return tbpnEmpaquetadoRecogida;
@@ -307,8 +311,15 @@ public class VentanaAlmaceneros extends JFrame {
 	
 	private void cargarPedidosRecogida() throws SQLException {
 		Container cont = new Container();
-		
-		for (Order c : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
+		List<Order> lista = new GetOrders().getOrdersByStatus(Status.PENDIENTE);
+		Collections.sort(lista, new Comparator<Order>() {
+			  public int compare(Order o1, Order o2) {
+			      if (o1.getDate() == null || o2.getDate() == null)
+			        return 0;
+			      return o1.getDate().compareTo(o2.getDate());
+			  }
+			});
+		for (Order c : lista) {
 			RecogidaPedidosPanel aux = new RecogidaPedidosPanel(c);
 			aux.getBtnRecoger().addActionListener(new ActionListener() {
 				@Override
@@ -359,8 +370,7 @@ public class VentanaAlmaceneros extends JFrame {
 			flowLayout.setHgap(40);
 			flowLayout.setAlignment(FlowLayout.LEFT);
 			pnIndiceRecogida.add(getLblRecogidaPedidoId());
-			pnIndiceRecogida.add(getLblDniCliente());
-			pnIndiceRecogida.add(getLblDireccionCliente());
+			pnIndiceRecogida.add(getLblTamanio());
 			pnIndiceRecogida.add(getLblFechaPedido());
 		}
 		return pnIndiceRecogida;
@@ -371,17 +381,11 @@ public class VentanaAlmaceneros extends JFrame {
 		}
 		return lblRecogidaPedidoId;
 	}
-	private JLabel getLblDniCliente() {
-		if (lblDniCliente == null) {
-			lblDniCliente = new JLabel("DNI");
+	private JLabel getLblTamanio() {
+		if (lblTamanio == null) {
+			lblTamanio = new JLabel("Tamanio");
 		}
-		return lblDniCliente;
-	}
-	private JLabel getLblDireccionCliente() {
-		if (lblDireccionCliente == null) {
-			lblDireccionCliente = new JLabel("Direccion");
-		}
-		return lblDireccionCliente;
+		return lblTamanio;
 	}
 	private JLabel getLblFechaPedido() {
 		if (lblFechaPedido == null) {
@@ -558,7 +562,8 @@ public class VentanaAlmaceneros extends JFrame {
 						etiquetado = true;
 						try {
 							etiqueta = etiqueta(new GetOrders().getOrder(getTxPedido().getText()));
-						} catch (SQLException e1) {
+							mostrarInicioEmpaquetado();
+						}catch (SQLException e1) {
 							e1.printStackTrace();
 						}
 						getBtnEtiquetar().setEnabled(false);
@@ -631,6 +636,7 @@ public class VentanaAlmaceneros extends JFrame {
 			btnIncidencia.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					//todo new AddIncidence(new Incidence(String));
+					mostrarInicioRecogida();
 				}
 			});
 		}

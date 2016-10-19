@@ -45,7 +45,7 @@ public class GetCustomers extends Connector implements OutBoardConnector {
 		new DisconnectDatabase(super.getDatabase());
 		return customer;
 	}
-
+	
 	protected void query() {
 		ResultSet rs = null;
 		try {
@@ -66,10 +66,11 @@ public class GetCustomers extends Connector implements OutBoardConnector {
 			if (rs2.next()) {
 				customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						new Address(rs2.getString(2), rs2.getString(3), rs2.getString(4), rs2.getString(5)));
-			} else {
+			} 
+			else {
 				customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), null);
 			}
-		} catch (SQLException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

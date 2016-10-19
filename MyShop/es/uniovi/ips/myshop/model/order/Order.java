@@ -26,7 +26,7 @@ public class Order {
 	private Status status;
 
 	public enum Status {
-		PENDIENTE, SOLICITADO, LISTO, EMPAQUETANDO;
+		PENDIENTE, SOLICITADO, LISTO, EMPAQUETANDO, INCIDENCIA;
 
 		public static Status getValueOf(String string) {
 			if(string.equals("PENDIENTE"))
@@ -35,6 +35,8 @@ public class Order {
 				return SOLICITADO;
 			else if(string.equals("LISTO"))
 				return LISTO;
+			else if(string.equals("INCIDENCIA"))
+				return INCIDENCIA;
 			else 
 				return EMPAQUETANDO;
 		}
@@ -241,7 +243,7 @@ public class Order {
 	 */
 	public String printBill() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("==== ALBARÁN DE COMPRA ====\n").append("MY SHOP\n\n").append(
+		sb.append("==== ALBARÃ�N DE COMPRA ====\n").append("MY SHOP\n\n").append(
 				"PRODUCTO\t\tCANTIDAD\t\tPRECIO/U\t\tTOTAL\n");
 		for (OrderDetail dp : products) {
 			sb.append(dp.getProducto().getDescripcion() + "\t\t" + dp
