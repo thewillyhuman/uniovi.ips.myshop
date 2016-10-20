@@ -1,6 +1,10 @@
 package es.uniovi.ips.myshop.model.order;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +21,7 @@ import es.uniovi.ips.myshop.model.product.Product;
  * @since 8 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class Order {
+public class Order implements Comparable<Order> {
 
 	private String orderID;
 	private Customer customer;
@@ -26,7 +30,7 @@ public class Order {
 	private Status status;
 
 	public enum Status {
-		PENDIENTE, SOLICITADO, LISTO, EMPAQUETANDO;
+		PENDIENTE, SOLICITADO, LISTO, EMPAQUETANDO, INCIDENCIA;
 
 		public static Status getValueOf(String string) {
 			if(string.equals("PENDIENTE"))
@@ -35,7 +39,9 @@ public class Order {
 				return SOLICITADO;
 			else if(string.equals("LISTO"))
 				return LISTO;
-			else 
+			else if(string.equals("INCIDENCIA"))
+				return INCIDENCIA;
+			else
 				return EMPAQUETANDO;
 		}
 	}
@@ -121,6 +127,16 @@ public class Order {
 	public void addProduct(Product product, int quantity) {
 		products.add(new OrderDetail(product, quantity));
 	}
+	
+	/**
+	 * Adds a product to the order with its quantity.
+	 * 
+	 * @param product to be added to the order.
+	 * @param quantity to be added of the given product.
+	 */
+	public void addProduct(Product product, int quantity, int collected) {
+		products.add(new OrderDetail(product, quantity, collected));
+	}
 
 	/**
 	 * Changes the quantity of a given product.
@@ -156,6 +172,7 @@ public class Order {
 	 * @return a list with all the products in the order.
 	 */
 	public List<OrderDetail> getProductos() {
+		Collections.sort(products);
 		return this.products;
 	}
 
@@ -225,12 +242,21 @@ public class Order {
 	 * @return the shipping info formatted.
 	 */
 	public String printShippingInfo() {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("IMPRESORA--ETIQUETA-ENVIO.txt", "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(getCliente().getName() + " " + getCliente().getSurname()
 				+ "\n");
 		Address add = getCliente().getAddress();
 		sb.append(add.getStreet() + "\n" + add.getCity() + "" + add.getState()
 				+ " " + add.getZipCode() + "\n");
+		writer.write(sb.toString());
+		writer.close();
 		return sb.toString();
 	}
 
@@ -240,16 +266,42 @@ public class Order {
 	 * @return a formatted string containing the bill.
 	 */
 	public String printBill() {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("IMPRESORA--ALBARÁN.txt", "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("==== ALBARÁN DE COMPRA ====\n").append("MY SHOP\n\n").append(
 				"PRODUCTO\t\tCANTIDAD\t\tPRECIO/U\t\tTOTAL\n");
 		for (OrderDetail dp : products) {
-			sb.append(dp.getProducto().getDescripcion() + "\t\t" + dp
+			sb.append(dp.getProducto().getIDProducto() + "\t\t" + dp
 					.getCantidad() + "\t\t" + dp.getProducto().getPrecio()
 					+ "\t\t" + dp.getCantidad() * dp.getProducto().getPrecio()
 					+ "\n");
 		}
-
+		writer.write(sb.toString());
+		writer.close();
 		return sb.toString();
+	}
+
+	/**
+	 * Returns true if all the products have been collected.
+	 * 
+	 * @return true if all the products have been collected.
+	 */
+	public boolean allCollected() {
+		for(OrderDetail od : this.products) {
+			if(od.collected==false)
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int compareTo(Order o) {
+		return this.getDate().compareTo(o.getDate());
 	}
 }

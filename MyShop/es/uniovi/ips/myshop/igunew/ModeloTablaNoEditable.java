@@ -19,6 +19,7 @@ public class ModeloTablaNoEditable extends DefaultTableModel {
 
 	private static final long serialVersionUID = 1L;
 	private List<OrderDetail> li = new ArrayList<OrderDetail>();
+	private Order order;
 
 	/**
 	 * Constructor intended to create a DefaultTableModel from its column names,
@@ -28,10 +29,15 @@ public class ModeloTablaNoEditable extends DefaultTableModel {
 	 * @param rowCount the number of rows the table holds.
 	 * @param reserva the current reserva where the model is going to work.
 	 */
-	public ModeloTablaNoEditable(Object[] columnNames, int rowCount) {
+	public ModeloTablaNoEditable(Object[] columnNames, int rowCount, Order order) {
 		super(columnNames, rowCount);
+		this.order=order;
 	}
 
+	public Order getOrder() {
+		return this.order;
+	}
+	
 	@Override
 	public boolean isCellEditable(int row, int column) {
 		return false;

@@ -3,6 +3,7 @@ package es.uniovi.ips.myshop.connectors;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,9 +39,10 @@ public class GetOrders extends Connector implements OutBoardConnector{
 		ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getOrderByID"), orderID);
 		rs.next();
 		Order aux = new Order(rs.getString(1), new GetCustomers().getCustomer(rs.getString(4)), rs.getDate(2));
+		aux.setStatus(Status.getValueOf(rs.getString(3)));
 		ResultSet rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getRPPRelation"), aux.getIdPedido());
 		while(rs2.next()) {
-			aux.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3));
+			aux.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3), rs2.getInt(4));
 		}
 		//db.closeConnection();
 		return aux;
@@ -75,12 +77,13 @@ public class GetOrders extends Connector implements OutBoardConnector{
 			order.setStatus(Status.getValueOf(rs.getString(3)));
 			ResultSet rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getRPPRelation"), order.getIdPedido());
 			while(rs2.next()) {
-				order.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3));
+				order.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3), rs2.getInt(4));
 			}
 			//order.addProduct(new , quantity);
 			aux.add(order);
 		}
 		new DisconnectDatabase(super.getDatabase());
+		Collections.reverse(aux);
 		return aux;
 	}
 }

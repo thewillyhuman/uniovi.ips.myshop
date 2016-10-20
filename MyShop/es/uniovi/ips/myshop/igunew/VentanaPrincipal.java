@@ -52,7 +52,6 @@ public class VentanaPrincipal extends JFrame {
 		setResizable(false);
 		setTitle("MyShop");
 		setMinimumSize(new Dimension(1046, 703));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -67,7 +66,7 @@ public class VentanaPrincipal extends JFrame {
 			imgCarrito = new JLabel("");
 			imgCarrito.setBounds(43, 6, 128, 128);
 			imgCarrito.setHorizontalAlignment(SwingConstants.CENTER);
-			imgCarrito.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/igu/img/box-closed.png")));
+			imgCarrito.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/es/uniovi/ips/myshop/igunew/img/box-closed.png")));
 		}
 		return imgCarrito;
 	}
@@ -77,7 +76,7 @@ public class VentanaPrincipal extends JFrame {
 			panel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					//Call to the next Window..
+					VentanaPrincipalCliente.main(null);
 				}
 			});
 			panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -103,7 +102,7 @@ public class VentanaPrincipal extends JFrame {
 			panel_1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					//Call to the next window.
+					VentanaPrincipalAlmacenero.main(null);
 				}
 			});
 			panel_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -118,7 +117,7 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel getLabel() {
 		if (label == null) {
 			label = new JLabel("");
-			label.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/igu/img/almacen.png")));
+			label.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/es/uniovi/ips/myshop/igunew/img/almacen.png")));
 			label.setHorizontalAlignment(SwingConstants.CENTER);
 			label.setBounds(43, 6, 128, 128);
 		}

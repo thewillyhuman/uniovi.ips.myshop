@@ -9,12 +9,12 @@ import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.properties.Properties;
 
-public class ModifyOrder extends InBoardConnector{
+public class ModifyOrderStatus extends InBoardConnector{
 
 	private Order order;
 	private Status newStatus;
 	
-	public ModifyOrder(Order order, Status newStatus) throws SQLException {
+	public ModifyOrderStatus(Order order, Status newStatus) throws SQLException {
 		this.order=order;
 		this.newStatus=newStatus;
 		this.query();

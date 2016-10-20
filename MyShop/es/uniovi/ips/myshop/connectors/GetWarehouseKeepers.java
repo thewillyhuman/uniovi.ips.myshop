@@ -39,15 +39,39 @@ public class GetWarehouseKeepers extends Connector implements OutBoardConnector 
 	
 
 	public WharehouseKeeper getByID(int parseInt) {
-		return null;
+		try {
+			new ConnectDatabase(super.getDatabase());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		ResultSet rs = null;
+		try {
+			rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getWKByID"), parseInt);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			if(rs!= null && rs.next()) {
+				return new WharehouseKeeper(rs.getString(1), rs.getString(2), rs.getString(3));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} return null;
 	}
 	
-	public boolean isOccupies(WharehouseKeeper wk) {
-		return false;
+	public boolean isOccupied(WharehouseKeeper wk) {
+		return new GetWorkingPlan().isOccupied(wk);
 	}
 
-	public Order getCurrentOrder() {
-		// TODO Auto-generated method stub
-		return null;
+	public Order getCurrentOrder(WharehouseKeeper wk) {
+		try {
+			return new GetOrders().getAllOrders().get(0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} return null;
 	}
 }
