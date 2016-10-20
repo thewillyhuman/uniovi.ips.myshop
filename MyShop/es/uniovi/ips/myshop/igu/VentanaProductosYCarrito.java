@@ -424,12 +424,21 @@ public class VentanaProductosYCarrito extends JFrame {
 		return btnRealizarPedido;
 	}
 	
-	private void mostrarVentanaInicio(){
-		mapaProductos = new HashMap<String,Integer>();
+	private void mostrarVentanaInicio() throws NumberFormatException, SQLException{
+		inicializarMap();
+		cargarProductosEnCarrito();
 		getPnBotonRecogida().setVisible(false);
 		getPnDatos().setVisible(false);
 		getScpProducts().setVisible(true);
 		getPnBotones().setVisible(true);
+		getTxNombre().setText("");
+		getTxApellidos().setText("");
+		getTxCalle().setText("");
+		getTxCiudad().setText("");
+		getTxDni().setText("");
+		getTxEstado().setText("");
+		getTxCodigoZip().setText("");
+		
 	}
 	
 	private boolean comprobacion(){

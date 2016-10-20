@@ -3,6 +3,7 @@ package es.uniovi.ips.myshop.igu;
 import javax.swing.JPanel;
 
 import es.uniovi.ips.myshop.model.order.Order;
+import es.uniovi.ips.myshop.model.order.OrderDetail;
 
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
@@ -18,20 +19,21 @@ public class RecogidaPedidosPanel extends JPanel{
 		flowLayout.setHgap(30);
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		getLblPedidoId().setText(o.getIdPedido());
-		getLblDniCliente().setText(o.getCliente().getDni());
-		getLblDireccionCliente().setText(o.getCliente().getAddress().toString());
+		int cantidad = 0;
+		for(OrderDetail p : o.getProductos()){
+			cantidad = cantidad + p.getCantidad();
+		}
+		getLblTamanio().setText(cantidad+"");
 		getLblFecha().setText(o.getDate().toString());
 		add(getLblPedidoId());
-		add(getLblDniCliente());
-		add(getLblDireccionCliente());
+		add(getLblTamanio());
 		add(getLblFecha());
 		add(getBtnRecoger());
 	}
 	private static final long serialVersionUID = 1L;
 	private JLabel lblPedidoId;
 	private JButton btnRecoger;
-	private JLabel lblDniCliente;
-	private JLabel lblDireccionCliente;
+	private JLabel lblTamanio;
 	private JLabel lblFecha;
 
 	private JLabel getLblPedidoId() {
@@ -46,17 +48,11 @@ public class RecogidaPedidosPanel extends JPanel{
 		}
 		return btnRecoger;
 	}
-	private JLabel getLblDniCliente() {
-		if (lblDniCliente == null) {
-			lblDniCliente = new JLabel("Dni cliente");
+	private JLabel getLblTamanio() {
+		if (lblTamanio == null) {
+			lblTamanio = new JLabel("Dni cliente");
 		}
-		return lblDniCliente;
-	}
-	private JLabel getLblDireccionCliente() {
-		if (lblDireccionCliente == null) {
-			lblDireccionCliente = new JLabel("Direccion cliente");
-		}
-		return lblDireccionCliente;
+		return lblTamanio;
 	}
 	private JLabel getLblFecha() {
 		if (lblFecha == null) {

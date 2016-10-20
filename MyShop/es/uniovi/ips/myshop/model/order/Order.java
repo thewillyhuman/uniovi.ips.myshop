@@ -1,5 +1,8 @@
 package es.uniovi.ips.myshop.model.order;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -227,12 +230,21 @@ public class Order {
 	 * @return the shipping info formatted.
 	 */
 	public String printShippingInfo() {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("IMPRESORA--ETIQUETA-ENVIO.txt", "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(getCliente().getName() + " " + getCliente().getSurname()
 				+ "\n");
 		Address add = getCliente().getAddress();
 		sb.append(add.getStreet() + "\n" + add.getCity() + "" + add.getState()
 				+ " " + add.getZipCode() + "\n");
+		writer.write(sb.toString());
+		writer.close();
 		return sb.toString();
 	}
 
@@ -242,16 +254,24 @@ public class Order {
 	 * @return a formatted string containing the bill.
 	 */
 	public String printBill() {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("IMPRESORA--ALBARÁN.txt", "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("==== ALBARÃ�N DE COMPRA ====\n").append("MY SHOP\n\n").append(
+		sb.append("==== ALBARÁN DE COMPRA ====\n").append("MY SHOP\n\n").append(
 				"PRODUCTO\t\tCANTIDAD\t\tPRECIO/U\t\tTOTAL\n");
 		for (OrderDetail dp : products) {
-			sb.append(dp.getProducto().getDescripcion() + "\t\t" + dp
+			sb.append(dp.getProducto().getIDProducto() + "\t\t" + dp
 					.getCantidad() + "\t\t" + dp.getProducto().getPrecio()
 					+ "\t\t" + dp.getCantidad() * dp.getProducto().getPrecio()
 					+ "\n");
 		}
-
+		writer.write(sb.toString());
+		writer.close();
 		return sb.toString();
 	}
 }

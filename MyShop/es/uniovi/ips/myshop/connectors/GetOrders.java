@@ -36,11 +36,13 @@ public class GetOrders extends Connector implements OutBoardConnector{
 	public Order getOrder(String orderID) throws SQLException {
 		new ConnectDatabase(super.getDatabase());
 		ResultSet rs = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getOrderByID"), orderID);
-		rs.next();
-		Order aux = new Order(rs.getString(1), new GetCustomers().getCustomer(rs.getString(4)), rs.getDate(2));
-		ResultSet rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getRPPRelation"), aux.getIdPedido());
-		while(rs2.next()) {
-			aux.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3));
+		Order aux = null;
+		if(rs.next()){
+			aux = new Order(rs.getString(1), new GetCustomers().getCustomer(rs.getString(4)), rs.getDate(2));
+			ResultSet rs2 = super.getDatabase().executeSQL(Properties.getString("myshop.sql.getRPPRelation"), aux.getIdPedido());
+			while(rs2.next()) {
+				aux.addProduct(new GetProducts().getProduct(rs2.getString(2)), rs2.getInt(3));
+			}
 		}
 		//db.closeConnection();
 		return aux;

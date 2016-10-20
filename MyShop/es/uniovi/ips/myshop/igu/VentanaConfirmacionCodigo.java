@@ -1,7 +1,9 @@
 package es.uniovi.ips.myshop.igu;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,8 +12,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import es.uniovi.ips.myshop.connectors.AddIncidence;
+
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class VentanaConfirmacionCodigo extends JDialog {
@@ -20,6 +23,7 @@ public class VentanaConfirmacionCodigo extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txCodigoProductoRecogida;
 	private static String s;
+	private JButton okButton;
 
 	/**
 	 * Launch the application.
@@ -52,33 +56,16 @@ public class VentanaConfirmacionCodigo extends JDialog {
 			contentPanel.add(lblCodigoDelProducto);
 		}
 		{
-			txCodigoProductoRecogida = new JTextField();
-			txCodigoProductoRecogida.setBounds(50, 57, 156, 20);
-			contentPanel.add(txCodigoProductoRecogida);
-			txCodigoProductoRecogida.setColumns(10);
+			contentPanel.add(getTxCodigoProductoRecogida());
 		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				okButton.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if(txCodigoProductoRecogida.getText().equals(s)){
-							JOptionPane.showConfirmDialog(w, "El producto con el codigo " + s + "\nha sido recogido satisfactoriamente" );
-							w.dispose();
-						}
-						else{
-							JOptionPane.showMessageDialog(w, "El id que ha introducido es erroneo");
-						}
-					}
-				});
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				
+				
+				getRootPane().setDefaultButton(getOkButton());
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -88,9 +75,28 @@ public class VentanaConfirmacionCodigo extends JDialog {
 						w.dispose();
 					}
 				});
+				buttonPane.add(getOkButton());
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+	}
+	
+	public JTextField getTxCodigoProductoRecogida(){
+		if(txCodigoProductoRecogida == null){
+			txCodigoProductoRecogida = new JTextField();
+			txCodigoProductoRecogida.setBounds(50, 57, 156, 20);
+			txCodigoProductoRecogida.setColumns(10);
+		}
+		return txCodigoProductoRecogida;
+	}
+
+	public JButton getOkButton() {
+		if(okButton == null){
+			okButton = new JButton("OK");
+			okButton.setActionCommand("OK");
+		}
+		return okButton;
 	}
 
 }

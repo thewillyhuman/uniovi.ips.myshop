@@ -96,6 +96,15 @@ public class WorkingPlan {
 	public WharehouseKeeper getAlmacenero() {
 		return almacenero;
 	}
+	
+	/**
+	 * Gives the order that of this working plan.
+	 * 
+	 * @return the Order assigned to this working plan.
+	 */
+	public Order getOrder(){
+		return order;
+	}
 
 	/**
 	 * Sets the current warehouse keeper.

@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -23,14 +24,18 @@ import javax.swing.border.EmptyBorder;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 
+import es.uniovi.ips.myshop.connectors.AddIncidence;
+import es.uniovi.ips.myshop.connectors.AddWorkingPlan;
 import es.uniovi.ips.myshop.connectors.GetOrders;
 import es.uniovi.ips.myshop.connectors.GetWarehouseKeepers;
+import es.uniovi.ips.myshop.connectors.GetWorkingPlan;
 import es.uniovi.ips.myshop.connectors.ModifyOrder;
 import es.uniovi.ips.myshop.model.order.Order;
 import es.uniovi.ips.myshop.model.order.OrderDetail;
 import es.uniovi.ips.myshop.model.order.Order.Status;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 import es.uniovi.ips.myshop.model.warehouse.WorkingPlan;
+import es.uniovi.ips.myshop.model.warehouse.incidences.Incidence;
 
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -77,14 +82,11 @@ public class VentanaAlmaceneros extends JFrame {
 	private JTextField txPedido;
 	private boolean etiquetado;
 	private boolean albaranizado;
-	private String etiqueta;
-	private String albaran;
 	private int productos;
 	private JPanel pnBotonesRecogida;
 	private JButton btnAceptar;
-	private JButton btnIncidencia;
 	private WharehouseKeeper almacenero;
-	
+	private WorkingPlan workingPlan;
 
 	/**
 	 * Launch the application.
@@ -165,8 +167,20 @@ public class VentanaAlmaceneros extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						almacenero = c;
-						cargarSegundoPanel();
+						List<Order> l = new GetOrders().getAllOrders();
+						if(new GetWorkingPlan().GetWorkingPlan(c) != null
+								|| (!new GetWorkingPlan().GetAnyWorkingPlan(c) 
+								|| new GetWorkingPlan().GetWorkingPlan(c).
+								getOrder().getEstado().equals(Status.LISTO))){
+							almacenero = c;
+							cargarSegundoPanel();
+						}
+						else{
+							JOptionPane.showMessageDialog(null,"Usted ya "
+									+ "tiene un pedido asignado, \n"
+									+ " terminelo y "
+									+ "luego podra volver a elegir otro");
+						}
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}	
@@ -282,10 +296,8 @@ public class VentanaAlmaceneros extends JFrame {
 	
 	private void cargarProductos() throws SQLException {
 		Container cont = new Container();
-		for (Order c : new GetOrders().getOrdersByStatus(Status.EMPAQUETANDO)) {
-			for(OrderDetail p : c.getProductos()){
+		for (Order c : new GetOrders().getOrdersByStatus(Status.SOLICITADO)) {
 				InformacionProductoPedidoPanel aux = new InformacionProductoPedidoPanel(c);
-				aux.getBtnEmpaquetar().setActionCommand(p.getProducto().getIDProducto());
 				aux.getBtnEmpaquetar().addActionListener(new ActionListener() {
 
 					@Override
@@ -296,10 +308,9 @@ public class VentanaAlmaceneros extends JFrame {
 				});
 				aux.setPreferredSize(new Dimension(getScpEmpaquetado().getWidth(), 233));
 				cont.add(aux);
-			}
 		}
 
-		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.EMPAQUETANDO).size(), 1));
+		cont.setLayout(new GridLayout(new GetOrders().getOrdersByStatus(Status.SOLICITADO).size(), 1));
 
 		revalidate();
 		repaint();
@@ -312,6 +323,10 @@ public class VentanaAlmaceneros extends JFrame {
 	private void cargarPedidosRecogida() throws SQLException {
 		Container cont = new Container();
 		List<Order> lista = new GetOrders().getOrdersByStatus(Status.PENDIENTE);
+		List<Order> aux1 = new GetOrders().getOrdersByStatus(Status.INCIDENCIA);
+		for(Order o : aux1){
+			lista.add(o);
+		}
 		Collections.sort(lista, new Comparator<Order>() {
 			  public int compare(Order o1, Order o2) {
 			      if (o1.getDate() == null || o2.getDate() == null)
@@ -324,7 +339,9 @@ public class VentanaAlmaceneros extends JFrame {
 			aux.getBtnRecoger().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					//TODO new AddWorkingPlan(new WorkingPlan(c,almacenero));
+					//TODO 
+					workingPlan = new WorkingPlan(c,almacenero);
+					new AddWorkingPlan(workingPlan);
 					realizarRecogida(c);
 				}
 			});
@@ -477,7 +494,7 @@ public class VentanaAlmaceneros extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					aux.getBtnRecoger().setEnabled(false);
 					productos--;
-					mostrarConfirmacionCodigoProducto(aux.getBtnRecoger().getActionCommand());	
+					mostrarConfirmacionCodigoProducto(aux.getBtnRecoger().getActionCommand(),o);	
 					if(productos==0){
 						getBtnAceptar().setEnabled(true);
 					}
@@ -497,8 +514,31 @@ public class VentanaAlmaceneros extends JFrame {
 		repaint();
 	}
 	
-	private void mostrarConfirmacionCodigoProducto(String s){
+	private void mostrarConfirmacionCodigoProducto(String s,Order o){
 		VentanaConfirmacionCodigo vc = new VentanaConfirmacionCodigo(s);
+		vc.getOkButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(vc.getTxCodigoProductoRecogida().getText().equals(s)){
+					vc.dispose();
+					JOptionPane.showConfirmDialog(vc, "El producto con el codigo " + s + "\nha sido recogido satisfactoriamente" );
+				}
+				else{
+					JOptionPane.showMessageDialog(vc, "El id que ha introducido es erroneo");
+					String id = "";
+					try {
+						id = new GetWorkingPlan().getIdWorkingPlan(workingPlan);
+						new AddIncidence(new Incidence(id,"Ha ocurrido una incidencia con el producto de codigo: " + s));
+						new ModifyOrder(o, Status.INCIDENCIA);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+	
+					mostrarInicioRecogida();
+				}
+			}
+		});
 		vc.setVisible(true);
 		vc.setLocationRelativeTo(this);
 	}
@@ -520,7 +560,7 @@ public class VentanaAlmaceneros extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if(etiquetado){
 						try {
-							albaran = albaran(new GetOrders().getOrder(getTxPedido().getText()));
+							albaran(new GetOrders().getOrder(getTxPedido().getText()));
 							Order o = new GetOrders().getOrder(getTxPedido().getText());
 							new ModifyOrder(o, Status.LISTO);
 							mostrarInicioEmpaquetado();
@@ -531,7 +571,7 @@ public class VentanaAlmaceneros extends JFrame {
 					else{
 						albaranizado = true;
 						try {
-							albaran = albaran(new GetOrders().getOrder(getTxPedido().getText()));
+							albaran(new GetOrders().getOrder(getTxPedido().getText()));
 						} catch (SQLException e1) {
 							e1.printStackTrace();
 						}
@@ -550,7 +590,7 @@ public class VentanaAlmaceneros extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if(albaranizado){
 						try {
-							etiqueta = etiqueta(new GetOrders().getOrder(getTxPedido().getText()));
+							etiqueta(new GetOrders().getOrder(getTxPedido().getText()));
 							Order o = new GetOrders().getOrder(getTxPedido().getText());
 							new ModifyOrder(o, Status.LISTO);
 							mostrarInicioEmpaquetado();
@@ -561,7 +601,7 @@ public class VentanaAlmaceneros extends JFrame {
 					else{
 						etiquetado = true;
 						try {
-							etiqueta = etiqueta(new GetOrders().getOrder(getTxPedido().getText()));
+							etiqueta(new GetOrders().getOrder(getTxPedido().getText()));
 							mostrarInicioEmpaquetado();
 						}catch (SQLException e1) {
 							e1.printStackTrace();
@@ -591,6 +631,7 @@ public class VentanaAlmaceneros extends JFrame {
 	private JTextField getTxPedido() {
 		if (txPedido == null) {
 			txPedido = new JTextField();
+			txPedido.setEditable(false);
 			txPedido.setBounds(221, 56, 86, 20);
 			txPedido.setColumns(10);
 		}
@@ -601,7 +642,6 @@ public class VentanaAlmaceneros extends JFrame {
 			pnBotonesRecogida = new JPanel();
 			FlowLayout flowLayout = (FlowLayout) pnBotonesRecogida.getLayout();
 			flowLayout.setAlignment(FlowLayout.RIGHT);
-			pnBotonesRecogida.add(getBtnIncidencia());
 			pnBotonesRecogida.add(getBtnAceptar());
 		}
 		return pnBotonesRecogida;
@@ -613,7 +653,7 @@ public class VentanaAlmaceneros extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						Order o = new GetOrders().getOrder(getTxRecogidaPedido().getText());
-						new ModifyOrder(o, Status.EMPAQUETANDO);
+						new ModifyOrder(o, Status.SOLICITADO);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
@@ -629,17 +669,5 @@ public class VentanaAlmaceneros extends JFrame {
 		getPnRecogidaProductos().setVisible(false);
 		getPnEleccionAlmacenero().setVisible(true);;
 		getBtnAceptar().setEnabled(false);
-	}
-	private JButton getBtnIncidencia() {
-		if (btnIncidencia == null) {
-			btnIncidencia = new JButton("Incidencia");
-			btnIncidencia.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					//todo new AddIncidence(new Incidence(String));
-					mostrarInicioRecogida();
-				}
-			});
-		}
-		return btnIncidencia;
 	}
 }
