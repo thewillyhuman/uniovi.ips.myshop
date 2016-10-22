@@ -47,7 +47,12 @@ public class AddOrder extends InBoardConnector {
 		String status = String.valueOf(order.getEstado());			
 		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getDate());
 		try {
-			super.getDatabase().executeUpdate(Properties.getString("myshop.sql.addOrder"), date, status, order.getCliente().getId());
+			new AddCustomer(order.getCliente());
+			ResultSet aux = super.getDatabase().executeSQL(Properties.getString("myshop.sql.lastInsertedID"));
+			String id=null;
+			if(aux.next())
+				id = aux.getString(1);
+			super.getDatabase().executeUpdate(Properties.getString("myshop.sql.addOrder"), date, status, id);
 		} catch (SQLException e) {
 			System.out.println(e.getSQLState());
 			e.printStackTrace();

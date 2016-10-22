@@ -13,7 +13,8 @@ import es.uniovi.ips.myshop.connectors.GetCustomers;
 import es.uniovi.ips.myshop.connectors.GetOrders;
 import es.uniovi.ips.myshop.connectors.GetProducts;
 import es.uniovi.ips.myshop.connectors.GetWarehouseKeepers;
-import es.uniovi.ips.myshop.connectors.ModifyOrder;
+import es.uniovi.ips.myshop.connectors.GetWorkingPlan;
+import es.uniovi.ips.myshop.connectors.ModifyOrderStatus;
 import es.uniovi.ips.myshop.database.client.Database;
 import es.uniovi.ips.myshop.database.client.MySQLDatabase;
 import es.uniovi.ips.myshop.model.order.Order;
@@ -23,6 +24,7 @@ import es.uniovi.ips.myshop.model.people.Address;
 import es.uniovi.ips.myshop.model.people.Customer;
 import es.uniovi.ips.myshop.model.people.WharehouseKeeper;
 import es.uniovi.ips.myshop.model.product.Product;
+import es.uniovi.ips.myshop.model.warehouse.WorkingPlan;
 import es.uniovi.ips.myshop.properties.Properties;
 
 public class SimpleTest {
@@ -152,7 +154,7 @@ public class SimpleTest {
 	@Test
 	public void changeOrderStatusTest() {
 		try {
-			new ModifyOrder(new GetOrders().getOrder("23"), Status.LISTO);
+			new ModifyOrderStatus(new GetOrders().getOrder("25"), Status.PENDIENTE);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -161,8 +163,9 @@ public class SimpleTest {
 	
 	@Test
 	public void getAllOrdersTest() {
+		
 		try {
-			for(Order o : new GetOrders().getOrdersByStatus(Status.PENDIENTE)) {
+			for(Order o : new GetOrders().getAllOrders()) {
 				System.out.println(o.getIdPedido() + " " +String.valueOf(o.getEstado()));
 			}
 		} catch (SQLException e) {
@@ -176,6 +179,20 @@ public class SimpleTest {
 		List<WharehouseKeeper> aux = new GetWarehouseKeepers().getAll();
 		for(WharehouseKeeper wk : aux) {
 			System.out.println(wk.getId() + " " + wk.getName());
+		}
+	}
+	
+	@Test
+	public void getAllWorkingPlans() {
+		for(WorkingPlan wk : new GetWorkingPlan().getAllWP()) {
+			System.out.println(wk.getID() + " " +wk.getOrder().getEstado()+" "+wk.getAlmacenero().getId());
+		}
+	}
+	
+	@Test
+	public void getOrderAlmaceneroTest() {
+		for(OrderDetail od: new GetWorkingPlan().getCurrent(new WharehouseKeeper("2", "Pepe", "Tuya")).getProductos()) {
+			System.out.println(od.getProducto().getIDProducto()+" "+od.collected);
 		}
 	}
 

@@ -13,13 +13,28 @@ import es.uniovi.ips.myshop.model.warehouse.incidences.Incidence;
  * @since 10 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class OrderDetail {
+public class OrderDetail implements Comparable<OrderDetail>{
 
 	private Product product;
 	private int quantity;
-	public boolean collected;
+	public boolean collected = false;
 	public Incidence incidence;
 
+	/**
+	 * Creates a new entry for a product and its quantity.
+	 * 
+	 * @param product to add to the order.
+	 * @param quantity to be added of the given product.
+	 */
+	public OrderDetail(Product product, int quantity, int collected) {
+		this.product = product;
+		setQuantity(quantity);
+		if(collected==1)
+			this.collected=false;
+		else 
+			this.collected=true;
+	}
+	
 	/**
 	 * Creates a new entry for a product and its quantity.
 	 * 
@@ -56,6 +71,11 @@ public class OrderDetail {
 	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	@Override
+	public int compareTo(OrderDetail o) {
+		return this.product.getLocalizacion().compareTo(o.getProducto().getLocalizacion());
 	}
 
 }

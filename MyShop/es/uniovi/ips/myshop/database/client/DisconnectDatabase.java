@@ -9,6 +9,6 @@ public class DisconnectDatabase {
 	 * @param db is the database to disconnect from.
 	 */
 	public DisconnectDatabase(Database db) {
-			db.closeConnection();
+			//db.closeConnection();
 	}
 }

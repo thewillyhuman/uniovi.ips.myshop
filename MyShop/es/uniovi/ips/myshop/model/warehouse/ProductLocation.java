@@ -9,7 +9,7 @@ package es.uniovi.ips.myshop.model.warehouse;
  * @since 10 de oct. de 2016
  * @formatter Oviedo Computing Community
  */
-public class ProductLocation {
+public class ProductLocation implements Comparable<ProductLocation> {
 
 	private int pasillo, posicion, altura;
 	private Lado lado;
@@ -52,6 +52,15 @@ public class ProductLocation {
 	 */
 	public Lado getLado() {
 		return lado;
+	}
+	
+	public String toString() {
+		return "PASILLO: " + pasillo + ". LADO: " + lado + ". POSICIÓN: " + posicion + ". ALTURA: " + altura + ".";
+	}
+
+	@Override
+	public int compareTo(ProductLocation o) {
+		return this.toString().compareTo(o.toString());
 	}
 	
 	

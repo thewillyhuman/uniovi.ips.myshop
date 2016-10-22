@@ -2,6 +2,7 @@ package es.uniovi.ips.myshop.igu;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
 
@@ -22,9 +23,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -41,12 +40,9 @@ public class VentanaProductosYCarrito extends JFrame {
 	private JPanel pnDescripcion;
 	private JScrollPane scpCarrito;
 	private JPanel pnBotones;
-	private JButton btAñadir;
-	private JButton btBorrar;
 	private JButton btAceptar;
 	
 	private Map<Product,Integer> mapaProductos = new HashMap<Product,Integer>();
-	private List<Product> listaProductos = new ArrayList<Product>();
 	private JPanel pnCarritoDescripcion;
 	private JLabel lbIndiceProducto;
 	private JLabel lbIndicePrecio;
@@ -74,19 +70,19 @@ public class VentanaProductosYCarrito extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public VentanaProductosYCarrito() {
+	public VentanaProductosYCarrito() throws SQLException {
 		setTitle("Ventana de Products");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 615, 300);
+		setBounds(100, 100, 756, 422);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		contentPane.add(getPnCarrito(), BorderLayout.CENTER);
-		contentPane.add(getPnProducts(), BorderLayout.WEST);
+		contentPane.add(getPnCarrito(), BorderLayout.EAST);
+		contentPane.add(getPnProducts(), BorderLayout.CENTER);
 		contentPane.add(getPnDescripcion(), BorderLayout.SOUTH);
-		inicializarListaYMap();
 		cargarProductsEnLista();
 		cargarProductosEnCarrito();
 	}
@@ -132,23 +128,9 @@ public class VentanaProductosYCarrito extends JFrame {
 		if (pnBotones == null) {
 			pnBotones = new JPanel();
 			pnBotones.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-			pnBotones.add(getBtAñadir());
-			pnBotones.add(getBtBorrar());
 			pnBotones.add(getBtAceptar());
 		}
 		return pnBotones;
-	}
-	private JButton getBtAñadir() {
-		if (btAñadir == null) {
-			btAñadir = new JButton("A\u00F1adir");
-		}
-		return btAñadir;
-	}
-	private JButton getBtBorrar() {
-		if (btBorrar == null) {
-			btBorrar = new JButton("Borrar");
-		}
-		return btBorrar;
 	}
 	private JButton getBtAceptar() {
 		if (btAceptar == null) {
@@ -157,29 +139,41 @@ public class VentanaProductosYCarrito extends JFrame {
 		return btAceptar;
 	}
 	
-	private void cargarProductsEnLista() {
+	private void cargarProductsEnLista() throws SQLException {
 		Container cont = new Container();
-		for (Product c : listaProductos) {
-			ProductoListaPanel aux = new ProductoListaPanel();
-			aux.getBtAñadir().addActionListener(new ActionListener() {
+		for (Product c :  new Inventory().getAllProducts()) {
+			ProductoListaPanel aux = new ProductoListaPanel(c);
+			aux.getBtAniadir().setActionCommand(c.getIDProducto());
+			aux.getBtAniadir().addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					añadirAlistaProductos(c);
+					try {
+						AniadirAlistaProductos(c);
+					} catch (NumberFormatException | SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			});
+			aux.getBtBorrar().setActionCommand(c.getIDProducto());
 			aux.getBtBorrar().addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					borrarDelistaProductos(c);
+					try {
+						borrarDelistaProductos(c);
+					} catch (NumberFormatException | SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			});
-
+			
+			aux.setPreferredSize(new Dimension(getScpProducts().getWidth(), 233));
+			
 			cont.add(aux);
 		}
 
-		cont.setLayout(new GridLayout(listaProductos.size(), 1));
+		cont.setLayout(new GridLayout( new Inventory().getAllProducts().size(), 1));
 
 		revalidate();
 		repaint();
@@ -190,10 +184,10 @@ public class VentanaProductosYCarrito extends JFrame {
 	}
 	
 	
-	private void cargarProductosEnCarrito() {
+	private void cargarProductosEnCarrito() throws NumberFormatException, SQLException {
 		Container cont = new Container();
 		
-		for (Product c : listaProductos) {
+		for (Product c :  new Inventory().getAllProducts()) {
 			if(mapaProductos.get(c) > 0){
 				ProductoEnCarritoPanel aux = new ProductoEnCarritoPanel(c);
 				int cantidad = Integer.parseInt(aux.getSpCantidad().getValue().toString());
@@ -209,6 +203,7 @@ public class VentanaProductosYCarrito extends JFrame {
 										aux.getLbPrecio().toString())+"");
 					}
 				});
+				aux.setPreferredSize(new Dimension(getScpCarrito().getWidth(), 233));
 				cont.add(aux);
 			}
 		}
@@ -223,12 +218,12 @@ public class VentanaProductosYCarrito extends JFrame {
 		repaint();
 	}
 	
-	private void añadirAlistaProductos(Product p){
+	private void AniadirAlistaProductos(Product p) throws NumberFormatException, SQLException{
 		mapaProductos.put(p,mapaProductos.get(p)+1);
 		cargarProductosEnCarrito();
 	}
 	
-	private void borrarDelistaProductos(Product p){
+	private void borrarDelistaProductos(Product p) throws NumberFormatException, SQLException{
 		mapaProductos.put(p,mapaProductos.get(p)-1);
 		cargarProductosEnCarrito();
 	}
@@ -271,14 +266,8 @@ public class VentanaProductosYCarrito extends JFrame {
 		return lbIndiceTotal;
 	}
 	
-	private void inicializarListaYMap(){
-		try {
-			listaProductos = new Inventory().getAllProducts();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for(Product p : listaProductos){
+	private void inicializarMap() throws SQLException{
+		for(Product p :  new Inventory().getAllProducts()){
 			mapaProductos.put(p, 0);
 		}
 	}

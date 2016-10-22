@@ -1,30 +1,35 @@
 package es.uniovi.ips.myshop.igu;
 
 import javax.swing.JPanel;
+
+import es.uniovi.ips.myshop.model.order.Order;
+
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
 public class RecogidaPedidosPanel extends JPanel{
-	public RecogidaPedidosPanel() {
+	public RecogidaPedidosPanel(Order o) {
 		FlowLayout flowLayout = (FlowLayout) getLayout();
 		flowLayout.setVgap(10);
 		flowLayout.setHgap(30);
 		flowLayout.setAlignment(FlowLayout.LEFT);
+		getLblPedidoId().setText(o.getIdPedido());
+		getLblDniCliente().setText(o.getCliente().getDni());
+		getLblDireccionCliente().setText(o.getCliente().getAddress().toString());
+		getLblFecha().setText(o.getDate().toString());
 		add(getLblPedidoId());
-		add(getLblPasillo());
-		add(getLblLado());
-		add(getLblPosicion());
-		add(getLblAltura());
+		add(getLblDniCliente());
+		add(getLblDireccionCliente());
+		add(getLblFecha());
 		add(getBtnRecoger());
 	}
 	private static final long serialVersionUID = 1L;
 	private JLabel lblPedidoId;
-	private JLabel lblPasillo;
-	private JLabel lblLado;
-	private JLabel lblPosicion;
-	private JLabel lblAltura;
 	private JButton btnRecoger;
+	private JLabel lblDniCliente;
+	private JLabel lblDireccionCliente;
+	private JLabel lblFecha;
 
 	private JLabel getLblPedidoId() {
 		if (lblPedidoId == null) {
@@ -32,34 +37,28 @@ public class RecogidaPedidosPanel extends JPanel{
 		}
 		return lblPedidoId;
 	}
-	private JLabel getLblPasillo() {
-		if (lblPasillo == null) {
-			lblPasillo = new JLabel("Pasillo");
-		}
-		return lblPasillo;
-	}
-	private JLabel getLblLado() {
-		if (lblLado == null) {
-			lblLado = new JLabel("Lado");
-		}
-		return lblLado;
-	}
-	private JLabel getLblPosicion() {
-		if (lblPosicion == null) {
-			lblPosicion = new JLabel("Posicion");
-		}
-		return lblPosicion;
-	}
-	private JLabel getLblAltura() {
-		if (lblAltura == null) {
-			lblAltura = new JLabel("Altura");
-		}
-		return lblAltura;
-	}
 	JButton getBtnRecoger() {
 		if (btnRecoger == null) {
 			btnRecoger = new JButton("Recoger");
 		}
 		return btnRecoger;
+	}
+	private JLabel getLblDniCliente() {
+		if (lblDniCliente == null) {
+			lblDniCliente = new JLabel("Dni cliente");
+		}
+		return lblDniCliente;
+	}
+	private JLabel getLblDireccionCliente() {
+		if (lblDireccionCliente == null) {
+			lblDireccionCliente = new JLabel("Direccion cliente");
+		}
+		return lblDireccionCliente;
+	}
+	private JLabel getLblFecha() {
+		if (lblFecha == null) {
+			lblFecha = new JLabel("Fecha");
+		}
+		return lblFecha;
 	}
 }
